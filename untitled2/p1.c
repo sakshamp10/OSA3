@@ -82,8 +82,8 @@ void send_t_rand_str(struct myStruct* myData, int t, int* start){
         printf("FIFO created successfully\n");
     }
     // Writing
-    printf("%d\n",2);
     int fd = open(FIFO, O_WRONLY);
+    printf("%d\n",2);
     for(int i=*start; i<min(*start+t,num); i++){
         printf("%s %s\n", myData[i].myIdx, myData[i].myStr);
         write(fd, myData[i].myIdx, (i<10?2:3));
