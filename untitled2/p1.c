@@ -68,6 +68,7 @@ void generate_n_rand_str(struct myStruct** myData){
 }
 
 void send_t_rand_str(struct myStruct* myData, int t, int* start){
+    printf("%d\n",1);
     // Creating FIFO
     umask(0);
     if(mknod(FIFO, S_IFIFO | 0660, 0) == -1){
@@ -81,6 +82,7 @@ void send_t_rand_str(struct myStruct* myData, int t, int* start){
         printf("FIFO created successfully\n");
     }
     // Writing
+    printf("%d\n",2);
     int fd = open(FIFO, O_WRONLY);
     for(int i=*start; i<min(*start+t,num); i++){
         printf("%s %s\n", myData[i].myIdx, myData[i].myStr);
@@ -88,6 +90,7 @@ void send_t_rand_str(struct myStruct* myData, int t, int* start){
         write(fd, myData[i].myStr, len);
     }
     close(fd);
+    printf("%d\n",3);
 }
 
 int receive_last_rand_str(struct myStruct** myData, int *start){
