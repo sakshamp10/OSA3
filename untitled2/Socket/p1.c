@@ -75,7 +75,7 @@ void send_t_rand_str(struct myStruct* myData, int t, int* start){
     memcpy(address.sun_path, LOCAL, strlen(LOCAL) + 1);
 
     if((fd = socket(AF_UNIX, SOCK_DGRAM, 0)) == -1){
-        perror("Socket cannot be initialized!");
+        perror("Socket cannot be initialized!1");
         exit(EXIT_FAILURE);
     }
 
@@ -110,7 +110,7 @@ int receive_last_rand_str(struct myStruct** myData, int *start){
 
     if((fd = socket(AF_UNIX, SOCK_DGRAM, 0)) == 0){}
     else{
-        printf("Socket cannot be initialized!");
+        printf("Socket cannot be initialized!2");
         exit(EXIT_FAILURE);
     }
 
