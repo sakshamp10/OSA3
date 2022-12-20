@@ -65,14 +65,14 @@ int main(){
 
     //code to send and receive the message using fifo
 
-    if(mkfifo(FIFO1,0666)==-1){
+    if(mkfifo("fifo1",0666)==-1){
         printf("\nError opening fifo1!\n\n");
         exit(-1);
     }
     else{
         printf("FIFO1 created!\n");
     }
-    if(mkfifo(FIFO2,0666)==-1){
+    if(mkfifo("fifo2",0666)==-1){
         printf("\nError opening fifo2!\n\n");
         exit(-1);
     }
