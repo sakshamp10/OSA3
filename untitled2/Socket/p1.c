@@ -189,7 +189,6 @@ int main(int argc, const char* argv[]){
         send_t_rand_str(myData, 5, &start);
         printf("----------------\n");
         printf("Received data:\n");
-        printf("Start\n");
         start = receive_last_rand_str(&myData, &start);
         start++;
         printf("----------------\n");
