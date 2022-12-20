@@ -58,7 +58,7 @@ void generate_n_rand_str(struct myStruct** myData){
         int_to_char(curr, &(*myData)[curr].myIdx);
         int i=0;
         while( (i) <= len-2){
-            (*myData)[curr].myStr[i] = 33 + rand()%62;
+            (*myData)[curr].myStr[i] = 65 + rand()%26;
             i++;
         }
         (*myData)[curr].myStr[len-1] = '\0';
