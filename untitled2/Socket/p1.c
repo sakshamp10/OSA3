@@ -121,8 +121,7 @@ int receive_last_rand_str(struct myStruct** myData, int *start){
     struct sockaddr_un address;
     int fd;
     fd = socket(AF_UNIX, SOCK_DGRAM, 0);
-    if(fd != -1){
-    }
+    if(fd != -1){}
     else{
         printf("Socket cannot be initialized!\n");
         exit(EXIT_FAILURE);
@@ -147,15 +146,13 @@ int receive_last_rand_str(struct myStruct** myData, int *start){
     size_t size;
     // printf("Write a message: ");
     size = recvfrom(fd, temp->myIdx, (idxsize(*start)), 0, (struct sockaddr *) &emitter, &length);
-    if(size != -1) {}
-    else{
+    if(size == -1) {
         if(errno == ECONNRESET) printf("ECONNRESET\n");
         close(fd);
         perror("Receiver"); exit(EXIT_FAILURE);
     }
     size = recvfrom(fd, temp->myStr, len, 0, (struct sockaddr *) &emitter, &length);
-    if(size != -1) {}
-    else{
+    if(size != -1) {
         if(errno == ECONNRESET) printf("ECONNRESET\n");
         close(fd);
         perror("Receiver"); exit(EXIT_FAILURE);
