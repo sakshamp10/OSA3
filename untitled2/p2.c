@@ -8,7 +8,7 @@
 #include<errno.h>
 #include<unistd.h>
 
-#define PIPE_NAME "./myFifo"
+#define PIPE_NAME "./fifo"
 
 struct myStruct{
     char* myIdx;

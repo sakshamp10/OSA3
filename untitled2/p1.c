@@ -76,7 +76,6 @@ void send_t_rand_str(struct myStruct* myData, int t, int* start){
             perror("Cannot create FIFO");
             exit(EXIT_FAILURE);
         }
-
     }
     else{
         printf("FIFO created successfully\n");
