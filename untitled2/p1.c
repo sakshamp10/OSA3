@@ -39,15 +39,12 @@ void int_to_char(int curr, char **ptr){
     }
 }
 
-int char_to_int(char** ptr){
-    int ans=0;
-    int i = 0;
-    while((*ptr)[i]!='\0'){
-        ans *= 10;
-        ans += (int)((*ptr)[i]-'0');
-        i++;
+
+int idxsize(int i){
+    if(i>=10){
+        return 3;
     }
-    return ans;
+    else return 2;
 }
 
 void generate_n_rand_str(struct myStruct** myData){
@@ -57,7 +54,7 @@ void generate_n_rand_str(struct myStruct** myData){
     for(;curr<num;curr++)
     {
         (*myData)[curr].myStr = (char*) malloc((len)*sizeof(char));
-        (*myData)[curr].myIdx = (char*) malloc((curr<10?2:3)*sizeof(char));
+        (*myData)[curr].myIdx = (char*) malloc(idxsize(curr)*sizeof(char));
         int_to_char(curr, &(*myData)[curr].myIdx);
 
         for(int i = 0; i <= len-2; i++){
@@ -68,7 +65,6 @@ void generate_n_rand_str(struct myStruct** myData){
 }
 
 void send_t_rand_str(struct myStruct* myData, int t, int* start){
-    printf("%d\n",1);
     // Creating FIFO
     umask(0);
     if(mknod(FIFO, S_IFIFO | 0660, 0) == -1){
@@ -81,20 +77,19 @@ void send_t_rand_str(struct myStruct* myData, int t, int* start){
         printf("FIFO created successfully\n");
     }
     // Writing
-    int fd = open(FIFO, O_WRONLY);
-    printf("%d\n",2);
+    int f1 = open(FIFO, O_WRONLY);
     for(int i=*start; i<min(*start+t,num); i++){
         printf("%s %s\n", myData[i].myIdx, myData[i].myStr);
-        write(fd, myData[i].myIdx, (i<10?2:3));
-        write(fd, myData[i].myStr, len);
+        write(f1, myData[i].myIdx, idxsize(i));
+        write(f1, myData[i].myStr, len);
     }
-    close(fd);
-    printf("%d\n",3);
+    close(f1);
+
 }
 
 int receive_last_rand_str(struct myStruct** myData, int *start){
     struct myStruct* temp = (struct myStruct*) malloc(sizeof(struct myStruct));
-    temp->myIdx = (char*) malloc(((*start-1)<10?2:3)*sizeof(char));
+    temp->myIdx = (char*) malloc((idxsize(*start-1))*sizeof(char));
     temp->myStr = (char*) malloc(len*sizeof(char));
     // Creating FIFO
     umask(0);
@@ -110,11 +105,20 @@ int receive_last_rand_str(struct myStruct** myData, int *start){
 
     // Reading
     int fd = open(FIFO, O_RDONLY);
-    read(fd, temp->myIdx, ((*start-1)<10?2:3));
+    read(fd, temp->myIdx, (idxsize(*start-1)));
     read(fd, temp->myStr, len);
     printf("%s\n", temp->myIdx);
     close(fd);
-    return char_to_int(&temp->myIdx);
+
+    int ans=0;
+    int i = 0;
+    while(temp->myIdx[i]!='\0'){
+        ans *= 10;
+        ans += (int)((temp->myIdx[i]-'0'));
+        i++;
+    }
+    return ans;
+
 }
 
 int main(int argc, const char* argv[]){
@@ -125,6 +129,9 @@ int main(int argc, const char* argv[]){
     while(start<num){
         printf("Sent data(1):\n");
         send_t_rand_str(myData, 5, &start);
+
+
+
         printf("----------------\n");
         sleep(1);
         printf("Received data(1):\n");
