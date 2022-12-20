@@ -11,12 +11,17 @@
 #include<sys/socket.h>
 #include<sys/un.h>
 
-#define PENDING_QUEUE_SIZE 1
 #define MAX_MESSAGE_SIZE 6
 #define LOCAL       "./sockP1"
 #define DESTINATION "./sockP2"
+#define len 6
+#define num 50
 
-#define MIN(X, Y) (((X) < (Y)) ? (X) : (Y))
+
+int min(int a , int b){
+    if(a>b) return b;
+    else return a;
+}
 
 struct myStruct{
     char* myIdx;
@@ -46,24 +51,24 @@ int char_to_int(char** ptr){
     return ans;
 }
 
-void generate_n_rand_str(struct myStruct** myData, int n, int l){
+void generate_n_rand_str(struct myStruct** myData){
     srand(time(NULL));
-    *myData = (struct myStruct*) malloc(n*sizeof(struct myStruct));
+    *myData = (struct myStruct*) malloc(num*sizeof(struct myStruct));
     int curr = 0;
-    while(curr<n){
-        (*myData)[curr].myStr = (char*) malloc((l)*sizeof(char));
+    while(curr<num){
+        (*myData)[curr].myStr = (char*) malloc((len)*sizeof(char));
         (*myData)[curr].myIdx = (char*) malloc((curr<10?2:3)*sizeof(char));
         int_to_char(curr, &(*myData)[curr].myIdx);
 
-        for(int i = 0; i <= l-2; i++){
-            (*myData)[curr].myStr[i] = 33 + rand()%62;
+        for(int i = 0; i <= len-2; i++){
+            (*myData)[curr].myStr[i] = 65 + rand()%26;
         }
-        (*myData)[curr].myStr[l-1] = '\0';
+        (*myData)[curr].myStr[len-1] = '\0';
         curr++;
     }
 }
 
-void send_t_rand_str(struct myStruct* myData, int n, int l, int t, int* start){
+void send_t_rand_str(struct myStruct* myData, int t, int* start){
     struct sockaddr_un address;
     int fd;
 
@@ -85,10 +90,10 @@ void send_t_rand_str(struct myStruct* myData, int n, int l, int t, int* start){
     destination.sun_family = AF_UNIX;
     memcpy(destination.sun_path, DESTINATION, strlen(DESTINATION) + 1);
 
-    for(int i=*start; i<MIN(*start+t,n); i++){
+    for(int i=*start; i<min(*start+t,num); i++){
         // printf("Write a message: ");
         sendto(fd, myData[i].myIdx, (i<10?2:3), 0, (struct sockaddr*) &destination, sizeof(destination));
-        sendto(fd, myData[i].myStr, l, 0, (struct sockaddr*) &destination, sizeof(destination));
+        sendto(fd, myData[i].myStr, len, 0, (struct sockaddr*) &destination, sizeof(destination));
         // connection_fd is marked as connected
         // and it knows where the message should be directed
         printf("%s %s\n", myData[i].myIdx, myData[i].myStr);
@@ -97,7 +102,7 @@ void send_t_rand_str(struct myStruct* myData, int n, int l, int t, int* start){
     close(fd);
 }
 
-int receive_last_rand_str(struct myStruct** myData, int n, int l, int *start){
+int receive_last_rand_str(struct myStruct** myData, int *start){
     struct sockaddr_un address;
     int fd;
 
@@ -116,20 +121,20 @@ int receive_last_rand_str(struct myStruct** myData, int n, int l, int *start){
     }
 
     struct sockaddr_un emitter;
-    socklen_t len;
+    socklen_t length;
 
     struct myStruct *temp = (struct myStruct*) malloc(sizeof(struct myStruct));
     temp->myIdx = (char*) malloc(sizeof(char)*((*start)<10?2:3));
     temp->myStr = (char*) malloc(sizeof(char)*MAX_MESSAGE_SIZE);
     size_t size;
     // printf("Write a message: ");
-    size = recvfrom(fd, temp->myIdx, ((*start)<10?2:3), 0, (struct sockaddr *) &emitter, &len);
+    size = recvfrom(fd, temp->myIdx, ((*start)<10?2:3), 0, (struct sockaddr *) &emitter, &length);
     if(size == -1) {
         if(errno == ECONNRESET) printf("ECONNRESET\n");
         close(fd);
         perror("Receiver"); exit(EXIT_FAILURE);
     }
-    size = recvfrom(fd, temp->myStr, l, 0, (struct sockaddr *) &emitter, &len);
+    size = recvfrom(fd, temp->myStr, len, 0, (struct sockaddr *) &emitter, &length);
     if(size == -1) {
         if(errno == ECONNRESET) printf("ECONNRESET\n");
         close(fd);
@@ -148,22 +153,17 @@ int receive_last_rand_str(struct myStruct** myData, int n, int l, int *start){
 
 int main(int argc, const char* argv[]){
     struct myStruct* myData;
-    int num_of_rand_str = 50;
-    int len_of_rand_str = 6;
-    generate_n_rand_str(&myData, num_of_rand_str, len_of_rand_str) ;
-    // printf("ok\n");
-    // for(int i=0; i<num_of_rand_str; i++){
-    //     printf("%s %s\n", myData[i].myIdx, myData[i].myStr);
-    // }
-    // printf("ok\n");
+
+    generate_n_rand_str(&myData) ;
 
     int start = 0;
-    while(start<num_of_rand_str){
+    while(start<num){
         printf("Sent data:\n");
-        send_t_rand_str(myData, num_of_rand_str, len_of_rand_str, 5, &start);
+        send_t_rand_str(myData, 5, &start);
         printf("----------------\n");
         printf("Received data:\n");
-        start = receive_last_rand_str(&myData, num_of_rand_str, len_of_rand_str, &start)+1;
+        start = receive_last_rand_str(&myData, &start);
+        start++;
         printf("----------------\n");
         sleep(1);
     }
