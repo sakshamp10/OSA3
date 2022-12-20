@@ -44,13 +44,18 @@ int main(){
         myMsg[i]->idx = (char*)malloc((4*sizeof(char)));
 
         int a = i+1;
-        int j=0;
-        while(a>0){
-            myMsg[i]->idx[j]=(char)(48+a%10);
-            a=a/10;
-            j++;
-        }
-        myMsg[i]->idx[j]='\0';
+//        while(a>0){
+            if(a>=10){
+                myMsg[i]->idx[1] = (char)(48+a%10); a/10;
+                myMsg[i]->idx[0] = (char)(48+a%10); a/10;
+                myMsg[i]->idx[2] = '\0';
+            }
+            else{
+                myMsg[i]->idx[1] = '\0';
+                myMsg[i]->idx[0] = (char)(48+a%10);
+            }
+
+//        }
     }
 
     for(int i=0;i<50;i++){
