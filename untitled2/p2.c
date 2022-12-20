@@ -41,7 +41,7 @@ void receive_t_rand_str(struct myStruct** myData, int* start){
 	int fd = open(FIFO, O_RDONLY);
     while(read(fd, (*myData)[*start].myIdx, (idxsize(*start)))>0){
 		read(fd, (*myData)[*start].myStr, len);
-		printf("p2 received: %s %s\n", (*myData)[*start].myIdx, (*myData)[*start].myStr);
+		printf("%s %s\n", (*myData)[*start].myIdx, (*myData)[*start].myStr);
 		*start=*start+1;
 		if(*start<num){
 			continue;
@@ -68,7 +68,7 @@ void send_last_rand_str(struct myStruct* myData, int *start){
 	int f1 = open(FIFO, O_WRONLY);
 	write(f1, myData[*start-1].myIdx, (idxsize(*start-1)));
 	write(f1, myData[*start-1].myStr, len);
-	printf("p2 sent: %s\n", myData[*start-1].myIdx);
+	printf("p2 sent max index: %s\n", myData[*start-1].myIdx);
 	close(f1);
 }
 
