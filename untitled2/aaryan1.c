@@ -65,14 +65,10 @@ void send_t_rand_str(struct myStruct* myData, int n, int l, int t, int* start){
             perror("Cannot create FIFO");
             exit(EXIT_FAILURE);
         }
-        // else{
-        // 	printf("Using existing FIFO\n");
-        // }
     }
     else{
         printf("FIFO created successfully\n");
     }
-    // printf("%d %d \n", *start, t);
     // Writing
     int fd = open(PIPE_NAME, O_WRONLY);
     for(int i=*start; i<MIN(*start+t,n); i++){
