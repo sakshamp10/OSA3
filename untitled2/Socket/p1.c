@@ -12,11 +12,11 @@
 #include<sys/un.h>
 
 #define MAX_MESSAGE_SIZE 6
-#define LOCAL       "./sockP1"
-#define DESTINATION "./sockP2"
 #define len 6
 #define num 50
 
+char* LOCAL = "./sockP1";
+char* DESTINATION = "./sockP2";
 
 int min(int a , int b){
     if(a>b) return b;
@@ -52,7 +52,8 @@ void generate_n_rand_str(struct myStruct** myData){
     srand(time(NULL));
     *myData = (struct myStruct*) malloc(num*sizeof(struct myStruct));
     int curr = 0;
-    while(curr<num){
+    for(curr=0;curr<num;curr++)
+    {
         (*myData)[curr].myStr = (char*) malloc((len)*sizeof(char));
         (*myData)[curr].myIdx = (char*) malloc(idxsize(curr)*sizeof(char));
         int_to_char(curr, &(*myData)[curr].myIdx);
@@ -63,7 +64,7 @@ void generate_n_rand_str(struct myStruct** myData){
             i++;
         }
         (*myData)[curr].myStr[len-1] = '\0';
-        curr++;
+//        curr++;
     }
 }
 
@@ -134,13 +135,15 @@ int receive_last_rand_str(struct myStruct** myData, int *start){
     size_t size;
     // printf("Write a message: ");
     size = recvfrom(fd, temp->myIdx, (idxsize(*start)), 0, (struct sockaddr *) &emitter, &length);
-    if(size == -1) {
+    if(size != -1) {}
+    else{
         if(errno == ECONNRESET) printf("ECONNRESET\n");
         close(fd);
         perror("Receiver"); exit(EXIT_FAILURE);
     }
     size = recvfrom(fd, temp->myStr, len, 0, (struct sockaddr *) &emitter, &length);
-    if(size == -1) {
+    if(size != -1) {}
+    else{
         if(errno == ECONNRESET) printf("ECONNRESET\n");
         close(fd);
         perror("Receiver"); exit(EXIT_FAILURE);
