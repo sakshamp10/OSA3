@@ -10,8 +10,7 @@
 #include <sys/un.h>
 
 int msgSize=6;
-char* FIFO1 = "fifo1";
-char* FIFO2 = "fifo2";
+
 
 struct message{
     char msg[6];
@@ -28,6 +27,8 @@ int idxsize(int i){
 }
 
 int main(){
+    char* FIFO1 = "fifo1";
+    char* FIFO2 = "fifo2";
     struct message* myMsg[50];
     struct message* reader= (struct message*)malloc(sizeof(struct message));
     reader->idx= (char*)malloc(sizeof(char)*4);
