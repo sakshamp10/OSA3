@@ -129,10 +129,10 @@ int main(int argc, const char* argv[]){
 
     int start = 0;
     while(start<num){
-        printf("Sent data(1):\n");
+//        printf("Sent data(1):\n");
         send_t_rand_str(myData, 5, &start);
         sleep(1);
-        printf("Received data(1):\n");
+//        printf("Received data(1):\n");
         start = receive_last_rand_str(&myData, &start);
         start++;
         printf("\n\n");
