@@ -49,8 +49,8 @@ cmake_ninja_workdir = C$:/Users/saksh/Assignment3_OS/OSA3/untitled2/cmake-build-
 
 build cmake_object_order_depends_target_untitled2: phony || CMakeFiles/untitled2.dir
 
-build CMakeFiles/untitled2.dir/p1.c.obj: C_COMPILER__untitled2_Debug C$:/Users/saksh/Assignment3_OS/OSA3/untitled2/p1.c || cmake_object_order_depends_target_untitled2
-  DEP_FILE = CMakeFiles\untitled2.dir\p1.c.obj.d
+build CMakeFiles/untitled2.dir/p1mine.c.obj: C_COMPILER__untitled2_Debug C$:/Users/saksh/Assignment3_OS/OSA3/untitled2/p1mine.c || cmake_object_order_depends_target_untitled2
+  DEP_FILE = CMakeFiles\untitled2.dir\p1mine.c.obj.d
   FLAGS = -g -std=gnu11
   OBJECT_DIR = CMakeFiles\untitled2.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled2.dir
@@ -61,14 +61,8 @@ build CMakeFiles/untitled2.dir/test.c.obj: C_COMPILER__untitled2_Debug C$:/Users
   OBJECT_DIR = CMakeFiles\untitled2.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled2.dir
 
-build CMakeFiles/untitled2.dir/aaryan.c.obj: C_COMPILER__untitled2_Debug C$:/Users/saksh/Assignment3_OS/OSA3/untitled2/aaryan.c || cmake_object_order_depends_target_untitled2
-  DEP_FILE = CMakeFiles\untitled2.dir\aaryan.c.obj.d
-  FLAGS = -g -std=gnu11
-  OBJECT_DIR = CMakeFiles\untitled2.dir
-  OBJECT_FILE_DIR = CMakeFiles\untitled2.dir
-
-build CMakeFiles/untitled2.dir/p2.c.obj: C_COMPILER__untitled2_Debug C$:/Users/saksh/Assignment3_OS/OSA3/untitled2/p2.c || cmake_object_order_depends_target_untitled2
-  DEP_FILE = CMakeFiles\untitled2.dir\p2.c.obj.d
+build CMakeFiles/untitled2.dir/p2mine.c.obj: C_COMPILER__untitled2_Debug C$:/Users/saksh/Assignment3_OS/OSA3/untitled2/p2mine.c || cmake_object_order_depends_target_untitled2
+  DEP_FILE = CMakeFiles\untitled2.dir\p2mine.c.obj.d
   FLAGS = -g -std=gnu11
   OBJECT_DIR = CMakeFiles\untitled2.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled2.dir
@@ -81,7 +75,7 @@ build CMakeFiles/untitled2.dir/p2.c.obj: C_COMPILER__untitled2_Debug C$:/Users/s
 #############################################
 # Link the executable untitled2.exe
 
-build untitled2.exe: C_EXECUTABLE_LINKER__untitled2_Debug CMakeFiles/untitled2.dir/p1.c.obj CMakeFiles/untitled2.dir/test.c.obj CMakeFiles/untitled2.dir/aaryan.c.obj CMakeFiles/untitled2.dir/p2.c.obj
+build untitled2.exe: C_EXECUTABLE_LINKER__untitled2_Debug CMakeFiles/untitled2.dir/p1mine.c.obj CMakeFiles/untitled2.dir/test.c.obj CMakeFiles/untitled2.dir/p2mine.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\untitled2.dir

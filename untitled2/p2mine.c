@@ -51,8 +51,6 @@ int main(){
     int curr=0;
     int i=0;
     while(curr<50){
-
-
         int f1;
         for(;i<curr+5;i++){
             f1= open(FIFO1,O_RDONLY);

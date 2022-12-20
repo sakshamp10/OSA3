@@ -41,7 +41,15 @@ int main(){
         }
         myMsg[i]->msg[msgSize-1]='\0';
         myMsg[i]->idx = (char*)malloc((4*sizeof(char)));
-        itoa(i+1,(myMsg[i]->idx),10);
+
+        int a = i+1;
+        int j=0;
+        while(a>0){
+            myMsg[i]->idx[j]=(char)(48+a%10);
+            a=a/10;
+            j++;
+        }
+        myMsg[i]->idx[j-1]='\0';
     }
 
 

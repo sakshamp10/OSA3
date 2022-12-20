@@ -1,11 +1,12 @@
-//#include<stdio.h>
-//#include<stdlib.h>
-//#include<time.h>
-//int main(){
-//    srand(time(NULL));
-//    int i=103;
-//    char a='a';
-//    a = (char) (33 + (rand() % 25));
-//    printf("string : %c",a);
-//    return 0;
-//}
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+int main(){
+    char * a= (char*)malloc(4*sizeof(char));
+    for(int i=0;i<3;i++){
+        a[i]=(char)(48+1);
+    }
+    a[3]='\0';
+    printf("string : %s",a);
+    return 0;
+}
