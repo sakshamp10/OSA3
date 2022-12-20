@@ -152,7 +152,7 @@ int receive_last_rand_str(struct myStruct** myData, int *start){
         perror("Receiver"); exit(EXIT_FAILURE);
     }
     size = recvfrom(fd, temp->myStr, len, 0, (struct sockaddr *) &emitter, &length);
-    if(size != -1) {
+    if(size == -1) {
         if(errno == ECONNRESET) printf("ECONNRESET\n");
         close(fd);
         perror("Receiver"); exit(EXIT_FAILURE);
@@ -167,10 +167,10 @@ int receive_last_rand_str(struct myStruct** myData, int *start){
         ans += (int)((temp->myIdx[i]-'0'));
         i++;
     }
-
+    int r_val=ans;
     free(temp);
     close(fd);
-    return ans;
+    return r_val;
 }
 
 int main(int argc, const char* argv[]){
