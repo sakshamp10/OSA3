@@ -40,16 +40,16 @@ void int_to_char(int curr, char **ptr){
     }
 }
 
-int char_to_int(char** ptr){
-    int ans=0;
-    int i = 0;
-    while((*ptr)[i]!='\0'){
-        ans *= 10;
-        ans += (int)((*ptr)[i]-'0');
-        i++;
-    }
-    return ans;
-}
+//int char_to_int(char** ptr){
+//    int ans=0;
+//    int i = 0;
+//    while((*ptr)[i]!='\0'){
+//        ans *= 10;
+//        ans += (int)((*ptr)[i]-'0');
+//        i++;
+//    }
+//    return ans;
+//}
 
 void generate_n_rand_str(struct myStruct** myData){
     srand(time(NULL));
@@ -115,7 +115,8 @@ int receive_last_rand_str(struct myStruct** myData, int *start){
     memcpy(address.sun_path, LOCAL, strlen(LOCAL) + 1);
 
     unlink(LOCAL);
-    if(bind(fd, (struct sockaddr*) &address, sizeof(address)) == -1){
+    if(bind(fd, (struct sockaddr*) &address, sizeof(address)) == 0){}
+    else{
         perror("Socket cannot be bound!");
         exit(EXIT_FAILURE);
     }
@@ -143,9 +144,15 @@ int receive_last_rand_str(struct myStruct** myData, int *start){
     // connection_fd is marked as connected
     // and it knows where the message should be directed
     printf("%s\n", temp->myIdx);
-    // printf("%s %s\n", temp->myIdx, temp->myStr);
+    int ans=0;
+    int i = 0;
+    while(temp->myIdx[i]!='\0'){
+        ans *= 10;
+        ans += (int)((temp->myIdx[i]-'0'));
+        i++;
+    }
+    int r_val = ans;
 
-    int r_val = char_to_int(&temp->myIdx);
     free(temp);
     close(fd);
     return r_val;
