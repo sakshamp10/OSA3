@@ -80,7 +80,7 @@ void send_t_rand_str(struct myStruct* myData, int t, int* start){
     // Writing
     int f1 = open(FIFO, O_WRONLY);
     for(int i=*start; i<min(*start+t,num); i++){
-        printf("%s %s\n", myData[i].myIdx, myData[i].myStr);
+        printf("p1 sent:%s %s\n", myData[i].myIdx, myData[i].myStr);
         write(f1, myData[i].myIdx, idxsize(i));
         write(f1, myData[i].myStr, len);
     }

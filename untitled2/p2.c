@@ -41,7 +41,7 @@ void receive_t_rand_str(struct myStruct** myData, int* start){
 	int fd = open(FIFO, O_RDONLY);
     while(read(fd, (*myData)[*start].myIdx, (idxsize(*start)))>0){
 		read(fd, (*myData)[*start].myStr, len);
-		printf("%s %s\n", (*myData)[*start].myIdx, (*myData)[*start].myStr);
+		printf("p2 got:%s %s\n", (*myData)[*start].myIdx, (*myData)[*start].myStr);
 		*start=*start+1;
 		if(*start<num){
 			continue;
