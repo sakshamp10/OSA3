@@ -56,17 +56,17 @@ void generate_n_rand_str(struct myStruct** myData){
     {
         (*myData)[curr].myStr = (char*) malloc((len)*sizeof(char));
         (*myData)[curr].myIdx = (char*) malloc(idxsize(curr)*sizeof(char));
-        int_to_char(curr, &(*myData)[curr].myIdx);
+//        int_to_char(curr, &(*myData)[curr].myIdx);
 
-//        if(curr>=10){
-//            (*myData)[curr].myIdx[0] = '0'+curr/10;
-//            (*myData)[curr].myIdx[1] = '0'+curr%10;
-//            (*myData)[curr].myIdx[2] ='\0';
-//        }
-//        else{
-//            (*myData)[curr].myIdx[0] = '0'+curr;
-//            (*myData)[curr].myIdx[1] = '\0';
-//        }
+        if(curr>=10){
+            (*myData)[curr].myIdx[0] = '0'+curr/10;
+            (*myData)[curr].myIdx[1] = '0'+curr%10;
+            (*myData)[curr].myIdx[2] ='\0';
+        }
+        else{
+            (*myData)[curr].myIdx[0] = '0'+curr;
+            (*myData)[curr].myIdx[1] = '\0';
+        }
 
 
         int i=0;
