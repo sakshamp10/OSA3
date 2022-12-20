@@ -28,7 +28,7 @@ void receive_t_rand_str(struct myStruct** myData, int* start){
 	// Creating the pipe
 	umask(0);
 	if(mknod(FIFO, S_IFIFO | 0660, 0) == 0){
-        printf("FIFO created successfully\n")
+        printf("FIFO created successfully\n");
 	}    
 	else{
         if(errno != EEXIST){
