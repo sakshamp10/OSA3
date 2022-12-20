@@ -8,8 +8,8 @@
 #include<errno.h>
 #include<unistd.h>
 
-#define FIFO1 "./fifo1"
-#define FIFO2 "./fifo2"
+#define FIFO1 "fifo1"
+#define FIFO2 "fifo2"
 
 struct message{
     char msg[10];
@@ -36,14 +36,14 @@ int main(){
 
 
     if(mkfifo(FIFO1,0666)==-1){
-        printf("\nError opening fifo1!\n\n");
+        printf("\nError opening fifo1(2)!\n\n");
         exit(-1);
     }
     else{
         printf("FIFO1 created!\n");
     }
     if(mkfifo(FIFO2,0666)==-1){
-        printf("\nError opening fifo2!\n\n");
+        printf("\nError opening fifo2!(2)\n\n");
         exit(-1);
     }else{
         printf("FIFO2 created!\n");
