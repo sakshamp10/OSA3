@@ -68,8 +68,7 @@ void receive_t_rand_str(struct myStruct** myData, int* start){
             close(fd);
             perror("Receiver"); exit(EXIT_FAILURE);
         }
-        if((*start)==0 || strcmp(temp->myIdx, (*myData)[(*start)-1].myIdx)!=0){}
-        else{
+        if((*start)!=0 && strcmp(temp->myIdx, (*myData)[(*start)-1].myIdx)==0){
             break;
         }
         memcpy((*myData)[*start].myIdx, temp->myIdx, ((*start)<10?2:3));
