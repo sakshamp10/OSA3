@@ -50,19 +50,23 @@ int main(){
             a=a/10;
             j++;
         }
-        myMsg[i]->idx[j-1]='\0';
+        myMsg[i]->idx[j]='\0';
+    }
+
+    for(int i=0;i<50;i++){
+        printf("%s %s\n",myMsg[i]->idx,myMsg[i]->msg);
     }
 
     //code to send and receive the message using fifo
 
-    if(mknod(FIFO1, S_IFIFO | 0666,0)==-1){
+    if(mkfifo(FIFO1,0666)==-1){
         printf("\nError opening fifo1!\n\n");
         exit(-1);
     }
     else{
         printf("FIFO1 created!\n");
     }
-    if(mknod(FIFO2,S_IFIFO | 0666,0)==-1){
+    if(mkfifo(FIFO2,0666)==-1){
         printf("\nError opening fifo2!\n\n");
         exit(-1);
     }
