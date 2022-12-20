@@ -7,10 +7,11 @@
 #include<fcntl.h>
 #include<errno.h>
 #include<unistd.h>
+#include <sys/un.h>
 
 int msgSize=6;
-#define FIFO1 "./fifo1"
-#define FIFO2 "./fifo2"
+char* FIFO1 = "fifo1";
+char* FIFO2 = "fifo2";
 
 struct message{
     char msg[6];
@@ -51,7 +52,6 @@ int main(){
         }
         myMsg[i]->idx[j-1]='\0';
     }
-
 
     //code to send and receive the message using fifo
 
