@@ -107,8 +107,8 @@ void send_t_rand_str(struct myStruct* myData, int t, int* start){
 int receive_last_rand_str(struct myStruct** myData, int *start){
     struct sockaddr_un address;
     int fd;
-
-    if((fd = socket(AF_UNIX, SOCK_DGRAM, 0)) == 0){}
+    fd = socket(AF_UNIX, SOCK_DGRAM, 0);
+    if((fd) == 0){}
     else{
         printf("Socket cannot be initialized!2");
         exit(EXIT_FAILURE);
