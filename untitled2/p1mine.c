@@ -46,13 +46,13 @@ int main(){
         int a = i+1;
 //        while(a>0){
             if(a>=10){
-                myMsg[i]->idx[1] = (char)(48+a%10); a/10;
-                myMsg[i]->idx[0] = (char)(48+a%10); a/10;
+                myMsg[i]->idx[1] = (char)(48+a%10);
+                myMsg[i]->idx[0] = (char)(48+a/10);
                 myMsg[i]->idx[2] = '\0';
             }
             else{
                 myMsg[i]->idx[1] = '\0';
-                myMsg[i]->idx[0] = (char)(48+a%10);
+                myMsg[i]->idx[0] = (char)(48+a);
             }
 
 //        }
