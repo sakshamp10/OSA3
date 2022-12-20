@@ -28,7 +28,7 @@ void receive_t_rand_str(struct myStruct** myData, int* start){
 	// Creating the pipe
 	umask(0);
 	if(mknod(FIFO, S_IFIFO | 0660, 0) == 0){
-        printf("FIFO created successfully\n");
+        printf("FIFO created successfully\n")
 	}    
 	else{
         if(errno != EEXIST){
@@ -43,9 +43,11 @@ void receive_t_rand_str(struct myStruct** myData, int* start){
 		read(fd, (*myData)[*start].myStr, len);
 		printf("%s %s\n", (*myData)[*start].myIdx, (*myData)[*start].myStr);
 		*start=*start+1;
-		if(*start>=num){
-			break;
-		}
+		if(*start<num){
+			continue;
+		}else{
+            break;
+        }
     }
 	close(fd);
 }
@@ -53,22 +55,20 @@ void receive_t_rand_str(struct myStruct** myData, int* start){
 void send_last_rand_str(struct myStruct* myData, int *start){
 	// Creating FIFO
 	umask(0);
-	if(mknod(FIFO, S_IFIFO | 0660, 0) == -1){
-		if(errno != EEXIST){
-			perror("Cannot create FIFO");
-			exit(EXIT_FAILURE);
-		}
-	}
-    else{
+	if(mknod(FIFO, S_IFIFO | 0660, 0) == 0){
         printf("FIFO created successfully\n");
     }
-    // printf("%d %d \n", *start, t);
+    else{
+        if(errno != EEXIST){
+            printf("Error creating FIFO");
+            exit(EXIT_FAILURE);
+        }
+    }
 	// Writing
 	int f1 = open(FIFO, O_WRONLY);
 	write(f1, myData[*start-1].myIdx, (idxsize(*start-1)));
 	write(f1, myData[*start-1].myStr, len);
 	printf("%s\n", myData[*start-1].myIdx);
-	// printf("%s %s\n", myData[*start-1].myIdx, myData[*start-1].myStr);
 	close(f1);
 }
 
