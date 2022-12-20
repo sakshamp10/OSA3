@@ -85,7 +85,6 @@ int main(int argc, const char* argv[]){
 	while(start<num){
         printf("Received data:\n");
 		receive_t_rand_str(&myData, &start);
-        printf("\n");
 		sleep(0.5);
 		printf("Sent data:\n");
 		send_last_rand_str(myData, &start);
