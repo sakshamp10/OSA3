@@ -91,6 +91,7 @@ void receive_t_rand_str(struct myStruct** myData, int* start){
     }
     free(temp);
     close(fd);
+    printf("RECEND\n");
 }
 
 void send_last_rand_str(struct myStruct* myData, int *start){
