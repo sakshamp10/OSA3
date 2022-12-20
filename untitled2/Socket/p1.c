@@ -118,6 +118,7 @@ void send_t_rand_str(struct myStruct* myData, int t, int* start){
 }
 
 int receive_last_rand_str(struct myStruct** myData, int *start){
+    printf(1);
     struct sockaddr_un address;
     int fd;
     fd = socket(AF_UNIX, SOCK_DGRAM, 0);
@@ -126,7 +127,7 @@ int receive_last_rand_str(struct myStruct** myData, int *start){
         printf("Socket cannot be initialized!\n");
         exit(EXIT_FAILURE);
     }
-
+    printf(2);
     address.sun_family = AF_UNIX;
     memcpy(address.sun_path, LOCAL, strlen(LOCAL) + 1);
 
@@ -137,6 +138,9 @@ int receive_last_rand_str(struct myStruct** myData, int *start){
         exit(EXIT_FAILURE);
     }
 
+    printf(3);
+
+
     struct sockaddr_un emitter;
     socklen_t length;
 
@@ -144,6 +148,9 @@ int receive_last_rand_str(struct myStruct** myData, int *start){
     temp->myIdx = (char*) malloc(sizeof(char)*(idxsize(*start)));
     temp->myStr = (char*) malloc(sizeof(char)*MAX_MESSAGE_SIZE);
     size_t size;
+
+    printf(4);
+
     // printf("Write a message: ");
     size = recvfrom(fd, temp->myIdx, (idxsize(*start)), 0, (struct sockaddr *) &emitter, &length);
     if(size == -1) {
@@ -151,12 +158,16 @@ int receive_last_rand_str(struct myStruct** myData, int *start){
         close(fd);
         perror("Receiver"); exit(EXIT_FAILURE);
     }
+    printf(5);
+
     size = recvfrom(fd, temp->myStr, len, 0, (struct sockaddr *) &emitter, &length);
     if(size == -1) {
         if(errno == ECONNRESET) printf("ECONNRESET\n");
         close(fd);
         perror("Receiver"); exit(EXIT_FAILURE);
     }
+    printf(6);
+
     // connection_fd is marked as connected
     // and it knows where the message should be directed
     printf("%s\n", temp->myIdx);
@@ -170,6 +181,9 @@ int receive_last_rand_str(struct myStruct** myData, int *start){
     int r_val=ans;
     free(temp);
     close(fd);
+
+    printf(7);
+
     return r_val;
 }
 
