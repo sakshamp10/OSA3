@@ -55,9 +55,20 @@ void generate_n_rand_str(struct myStruct** myData){
     {
         (*myData)[curr].myStr = (char*) malloc((len)*sizeof(char));
         (*myData)[curr].myIdx = (char*) malloc(idxsize(curr)*sizeof(char));
-        int_to_char(curr, &(*myData)[curr].myIdx);
 
-        for(int i = 0; i <= len-2; i++){
+
+        if(curr>=10){
+            (*myData)[curr].myIdx[0] = '0'+curr/10;
+            (*myData)[curr].myIdx[1] = '0'+curr%10;
+            (*myData)[curr].myIdx[2] ='\0';
+        }
+        else{
+            (*myData)[curr].myIdx[0] = '0'+curr;
+            (*myData)[curr].myIdx[1] = '\0';
+        }
+
+        int i=0;
+        while( (i++) <= len-2){
             (*myData)[curr].myStr[i] = 33 + rand()%62;
         }
         (*myData)[curr].myStr[len-1] = '\0';
@@ -67,14 +78,14 @@ void generate_n_rand_str(struct myStruct** myData){
 void send_t_rand_str(struct myStruct* myData, int t, int* start){
     // Creating FIFO
     umask(0);
-    if(mknod(FIFO, S_IFIFO | 0660, 0) == -1){
+    if(mknod(FIFO, S_IFIFO | 0660, 0) == 0){
+        printf("FIFO created successfully\n");
+    }
+    else{
         if(errno != EEXIST){
             perror("Cannot create FIFO");
             exit(EXIT_FAILURE);
         }
-    }
-    else{
-        printf("FIFO created successfully\n");
     }
     // Writing
     int f1 = open(FIFO, O_WRONLY);
@@ -93,14 +104,15 @@ int receive_last_rand_str(struct myStruct** myData, int *start){
     temp->myStr = (char*) malloc(len*sizeof(char));
     // Creating FIFO
     umask(0);
-    if(mknod(FIFO, S_IFIFO | 0660, 0) == -1){
+    if(mknod(FIFO, S_IFIFO | 0660, 0) == 0){
+        printf("FIFO created successfully\n");
+
+    }
+    else{
         if(errno != EEXIST){
             printf("ERROR CREATING FIFO");
             exit(EXIT_FAILURE);
         }
-    }
-    else{
-        printf("FIFO created successfully\n");
     }
 
     // Reading
@@ -129,9 +141,6 @@ int main(int argc, const char* argv[]){
     while(start<num){
         printf("Sent data(1):\n");
         send_t_rand_str(myData, 5, &start);
-
-
-
         printf("----------------\n");
         sleep(1);
         printf("Received data(1):\n");
