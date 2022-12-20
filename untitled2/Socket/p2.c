@@ -59,8 +59,8 @@ void receive_t_rand_str(struct myStruct** myData, int* start){
     temp->myIdx = (char*) malloc(sizeof(char)*((*start)<10?2:3));
     temp->myStr = (char*) malloc(sizeof(char)*MAX_MESSAGE_SIZE);
     size_t size;
-    int j = 0;
-    while(j!=5){
+    int ii = 0;
+    while(ii!=5){
         // printf("Write a message: ");
         size = recvfrom(fd, temp->myIdx, ((*start)<10?2:3), 0, (struct sockaddr *) &emitter, &length);
         if(size == -1) {
@@ -82,11 +82,10 @@ void receive_t_rand_str(struct myStruct** myData, int* start){
 
         printf("%s %s\n", (*myData)[*start].myIdx, (*myData)[*start].myStr);
         *start=*start+1;
-        if(*start<num){}
-        else{
+        if(*start>=num){
             break;
         }
-        j++;
+        ii++;
     }
     free(temp);
     close(fd);
@@ -118,6 +117,8 @@ void send_last_rand_str(struct myStruct* myData, int *start){
     sendto(fd, myData[(*start)-1].myStr, len, 0, (struct sockaddr*) &destination, sizeof(destination));
 
     printf("%s\n", myData[(*start)-1].myIdx);
+    // printf("%s %s\n", myData[(*start)-1].myIdx, myData[(*start)-1].myStr);
+
     close(fd);
 }
 
@@ -139,7 +140,7 @@ int main(int argc, const char* argv[]){
         printf("----------------\n");
         sleep(1);
         printf("Sent data:\n");
-        send_last_rand_str(myData, &start);
+        send_last_rand_str(myData,&start);
         printf("----------------\n");
     }
 
