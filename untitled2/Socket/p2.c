@@ -109,7 +109,7 @@ void send_last_rand_str(struct myStruct* myData, int *start){
     destination.sun_family = AF_UNIX;
     memcpy(destination.sun_path, DESTINATION, strlen(DESTINATION) + 1);
 
-    sendto(fd, myData[(*start)-1].myIdx, (idxsize(*start-1), 0, (struct sockaddr*) &destination, sizeof(destination));
+    sendto(fd, myData[(*start)-1].myIdx, (idxsize(*start-1), 0, (struct sockaddr*) &destination, sizeof(destination)));
     sendto(fd, myData[(*start)-1].myStr, l, 0, (struct sockaddr*) &destination, sizeof(destination));
 
     printf("%s\n", myData[(*start)-1].myIdx);
@@ -134,7 +134,7 @@ int main(int argc, const char* argv[]){
         printf("----------------\n");
         sleep(1);
         printf("Sent data:\n");
-        send_last_rand_str(myData &start);
+        send_last_rand_str(myData ,&start);
         printf("----------------\n");
     }
 
