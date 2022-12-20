@@ -67,14 +67,14 @@ int main(){
 
     if(mkfifo("fifo1",0666)==-1){
         printf("\nError opening fifo1!\n\n");
-        exit(-1);
+//        exit(-1);
     }
     else{
         printf("FIFO1 created!\n");
     }
     if(mkfifo("fifo2",0666)==-1){
         printf("\nError opening fifo2!\n\n");
-        exit(-1);
+//        exit(-1);
     }
     else{
         printf("FIFO2 created!\n");
