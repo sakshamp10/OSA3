@@ -108,9 +108,9 @@ int receive_last_rand_str(struct myStruct** myData, int *start){
     struct sockaddr_un address;
     int fd;
     fd = socket(AF_UNIX, SOCK_DGRAM, 0);
-    if((fd) == 0){}
+    if(fd == 0){}
     else{
-        printf("Socket cannot be initialized!2");
+        printf("Socket cannot be initialized!2\n");
         exit(EXIT_FAILURE);
     }
 
