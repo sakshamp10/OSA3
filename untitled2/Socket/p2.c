@@ -35,6 +35,7 @@ int idxsize(int i){
 }
 
 void receive_t_rand_str(struct myStruct** myData, int* start){
+    printf("REC\n");
     struct sockaddr_un address;
     int fd;
 
@@ -93,6 +94,7 @@ void receive_t_rand_str(struct myStruct** myData, int* start){
 }
 
 void send_last_rand_str(struct myStruct* myData, int *start){
+    printf("SEND\n");
     struct sockaddr_un address;
     int fd;
     fd=socket(AF_UNIX, SOCK_DGRAM, 0);
