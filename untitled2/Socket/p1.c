@@ -1,4 +1,3 @@
-
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
@@ -44,8 +43,7 @@ void generate_n_rand_str(struct myStruct** myData){
     {
         (*myData)[curr].myStr = (char*) malloc((len)*sizeof(char));
         (*myData)[curr].myIdx = (char*) malloc(idxsize(curr)*sizeof(char));
-
-
+//        int to character
         if(curr>=10){
             (*myData)[curr].myIdx[0] = '0'+curr/10;
             (*myData)[curr].myIdx[1] = '0'+curr%10;
@@ -64,7 +62,6 @@ void generate_n_rand_str(struct myStruct** myData){
             i++;
         }
         (*myData)[curr].myStr[len-1] = '\0';
-//        curr++;
     }
 }
 
