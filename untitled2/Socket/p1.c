@@ -35,18 +35,6 @@ int idxsize(int i){
     else return 2;
 }
 
-void int_to_char(int curr, char **ptr){
-    if(curr>=10){
-        (*ptr)[0] = '0'+curr/10;
-        (*ptr)[1] = '0'+curr%10;
-        (*ptr)[2] ='\0';
-    }
-    else{
-        (*ptr)[0] = '0'+curr;
-        (*ptr)[1] = '\0';
-    }
-}
-
 
 void generate_n_rand_str(struct myStruct** myData){
     srand(time(NULL));
@@ -56,7 +44,7 @@ void generate_n_rand_str(struct myStruct** myData){
     {
         (*myData)[curr].myStr = (char*) malloc((len)*sizeof(char));
         (*myData)[curr].myIdx = (char*) malloc(idxsize(curr)*sizeof(char));
-//        int_to_char(curr, &(*myData)[curr].myIdx);
+
 
         if(curr>=10){
             (*myData)[curr].myIdx[0] = '0'+curr/10;
