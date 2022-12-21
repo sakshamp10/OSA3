@@ -74,7 +74,7 @@ int main(){
             acquire(&send);
             j++;
         }
-        i+=j;
+        i+=4;
         printf("MAX ID received: %d\n",i);
 
     }
