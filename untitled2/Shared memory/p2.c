@@ -16,18 +16,14 @@
 #define semfile "semaphorefile"
 
 
-void acquire(int sf){
-    char* a = "1";
-    while(strcmp(a,"1")==0 || a==NULL){
-        lseek(sf,0,SEEK_SET);
-        read(sf,&a,1);
+void acquire(char** sem){
+    while(strcmp(*sem,"wait")==0){
     }
-    write(sf,"0",1);
+    strcpy(*sem,"wait");
 }
 
-void release(int sf){
-    lseek(sf,0,SEEK_SET);
-    write(sf,"1",1);
+void release(char** sem){
+    strcpy(*sem,"go");
 }
 
 
@@ -39,17 +35,14 @@ int main(){
 
     send = (char*)shmat(shmid,NULL,0);
 
-    int sf = open(semfile,O_RDWR|O_CREAT,0666);
-
     int curr=0;
     while(curr<num){
         for(int i=curr;i<curr+5;i++){
-            acquire(sf);
+            acquire(&send);
             printf("received : %s\n",send);
-            release(sf);
+            release(&send);
         }
         printf("max id sent: %d\n",curr+4);
     }
-
     return 0;
 }
