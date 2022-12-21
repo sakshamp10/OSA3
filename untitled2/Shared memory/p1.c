@@ -30,7 +30,7 @@ void acquire(char** sem){
 }
 
 void release(char** sem){
-    strcpy(*sem,"go");
+    strcpy(*sem,"");
 }
 
 
@@ -73,7 +73,6 @@ int main(){
         while(j<5){
             acquire(&send);
             strcpy(send,msg[i]);
-            release(&send);
             j++;
         }
         i+=j;
