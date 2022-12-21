@@ -41,7 +41,8 @@ int main(){
             printf("received : %s\n",send);
             release(&send);
         }
-        printf("max id sent: %d\n",curr+4);
+        curr+=4;
+        printf("max id sent: %d\n",curr);
     }
     return 0;
 }

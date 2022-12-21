@@ -7,8 +7,8 @@
 #include<fcntl.h>
 #include<errno.h>
 #include<unistd.h>
-#include<sys/ipc.h>
-#include<sys/shm.h>
+//#include<sys/ipc.h>
+//#include<sys/shm.h>
 #include <semaphore.h>
 
 #define len 9
@@ -46,12 +46,12 @@ int main(){
             j=3;
             msg[i][0] = '0'+i/10;
             msg[i][1] = '0'+i%10;
-            msg[i][2] ='\0';
+            msg[i][2] =' ';
         }
         else {
             j=2;
             msg[i][0] = '0' + i;
-            msg[i][1] = '\0';
+            msg[i][1] = ' ';
         }
 
         while( (j) <= len-2){
@@ -70,8 +70,8 @@ int main(){
     for(int i=0;i<num;){
         int j=i;
         while(j<i+5){
-            strcpy(send,msg[i]);
             acquire(&send);
+            strcpy(send,msg[j]);
             j++;
         }
         i+=4;
