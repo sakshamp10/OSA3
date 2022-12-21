@@ -3,4 +3,4 @@ project(untitled2 C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(untitled2 p1mine.c test.c p2mine.c aaryan1.c aaryan2.c Socket/p1.c Socket/p2.c cmake-build-debug/Q1/1a.c "Shared memory/p1.c" "Shared memory/p2.c" Q3/Q3.c)
+add_executable(untitled2 p1mine.c test.c p2mine.c aaryan1.c aaryan2.c Socket/p1.c Socket/p2.c cmake-build-debug/Q1/1a.c "Shared memory/p1.c" "Shared memory/p2.c" Q3/Q3.c Q1/1a_2.c Q1/1b.c)
