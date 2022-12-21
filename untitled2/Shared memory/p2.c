@@ -48,5 +48,6 @@ int main(){
         }
         curr+=5;
     }
+    free(send);
     return 0;
 }
