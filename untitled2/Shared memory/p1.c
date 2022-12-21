@@ -80,10 +80,10 @@ int main(){
             myMsg[i]->idx[1] = '0'+i%10;
             myMsg[i]->idx[2] ='\0';
         }
-        else{
-            myMsg[i]->idx[0] = '0'+i;
+        else {
+            myMsg[i]->idx[0] = '0' + i;
             myMsg[i]->idx[1] = '\0';
-
+        }
         printf("%s %s\n",myMsg[i]->msg,myMsg[i]->idx);
     }
 
