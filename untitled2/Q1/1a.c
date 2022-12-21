@@ -8,7 +8,7 @@
 #define NO_OF_PHILS 5
 #define NO_OF_FORKS 5
 #define NO_OF_SAUCE_BOWLS 4
-#define TIME_T 0.5
+#define TIME_T 1
 #define DEADLOCK 0
 
 sem_t lock;
