@@ -63,7 +63,6 @@ int main(){
     printf("Number of Philosophers: %d\n",5);
     printf("Number of Forks: %d\n",5);
     printf("*************************************\n");
-
     for(int i=0;i<5;i++){
         st=pthread_create(&philosophers[i],NULL,thinking_start,&sequencing[i]);
         if(st){
