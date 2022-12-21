@@ -40,13 +40,14 @@ int main(){
 
     int curr=0;
     while(curr<num){
-        for(int i=curr;i<min(curr+5,num);i++){
+        int i=curr;
+        for(;i<min(curr+5,num);i++){
             acquire(&send);
             printf("received : %s\n",send);
             release(&send);
         }
         curr+=4;
-        printf("max id sent: %d\n",curr);
+        printf("max id sent: %d\n",i);
     }
     return 0;
 }

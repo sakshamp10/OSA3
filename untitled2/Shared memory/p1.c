@@ -79,7 +79,7 @@ int main(){
             j++;
         }
         i+=4;
-        printf("MAX ID received: %d\n",i);
+        printf("MAX ID received: %d\n",j);
 
     }
 
