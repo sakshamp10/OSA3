@@ -25,6 +25,10 @@ void release(char** sem){
     strcpy(*sem,"wait");
 }
 
+int min(int a , int b){
+    if(a>b) return b;
+    else return a;
+}
 
 
 int main(){
@@ -36,7 +40,7 @@ int main(){
 
     int curr=0;
     while(curr<num){
-        for(int i=curr;i<curr+5;i++){
+        for(int i=curr;i<min(curr+5,num);i++){
             acquire(&send);
             printf("received : %s\n",send);
             release(&send);

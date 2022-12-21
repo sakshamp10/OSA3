@@ -32,6 +32,10 @@ void release(char** sem){
     strcpy(*sem,"");
 }
 
+int min(int a , int b){
+    if(a>b) return b;
+    else return a;
+}
 
 int main(){
     srand(time(NULL));
@@ -69,7 +73,7 @@ int main(){
     send = (char*) shmat(shmid,NULL,0);
     for(int i=0;i<num;){
         int j=i;
-        while(j<i+5){
+        while(j<min(i+5,num)){
             acquire(&send);
             strcpy(send,msg[j]);
             j++;
