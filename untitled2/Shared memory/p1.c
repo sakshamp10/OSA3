@@ -7,10 +7,14 @@
 #include<fcntl.h>
 #include<errno.h>
 #include<unistd.h>
-//#include<sys/ipc.h>
+#include<sys/ipc.h>
+#include<sys/shm.h>
+#include <semaphore.h>
 
 #define len 6
 #define num 50
+
+char* semName= "sem1";
 
 struct message{
     char msg[10];
@@ -25,33 +29,14 @@ int idxsize(int i){
         return 2;
     }
 }
-void generate_strings(struct message** myMsg, int curr){
 
-    *myMsg = (struct message*) malloc(num*sizeof(struct message));
-        (*myMsg)->idx = (char*) malloc(idxsize(curr)*sizeof(char));
-
-        if(curr>=10){
-            (*myMsg)->idx[0] = '0'+curr/10;
-            (*myMsg)->idx[1] = '0'+curr%10;
-            (*myMsg)->idx[2] ='\0';
-        }
-        else{
-            (*myMsg)->idx[0] = '0'+curr;
-            (*myMsg)->idx[1] = '\0';
-        }
-
-        int i=0;
-        while( (i) <= len-2){
-            (*myMsg)->msg[i] = 65 + rand()%26;
-            i++;
-        }
-        (*myMsg)->msg[len-1] = '\0';
-}
 
 int main(){
     srand(time(NULL));
     struct message* myMsg[50];
     struct message* sender,*receiver;
+
+    sem_t *sem = sem_open(semName,O_CREAT,0666,1);
 
     sender=(struct message*)malloc(sizeof(struct message));
     sender->idx=(char*)malloc(3*sizeof(char));
@@ -64,9 +49,8 @@ int main(){
     }
 
 
-
+//  generate_strings
     for(int i=0;i<num;i++){
-//        generate_strings(&myMsg[i],i);
         myMsg[i]->idx=(char*)malloc(idxsize(i)*sizeof(char));
         int j=0;
         while( (j) <= len-2){
@@ -84,11 +68,41 @@ int main(){
             myMsg[i]->idx[0] = '0' + i;
             myMsg[i]->idx[1] = '\0';
         }
-        printf("%s %s\n",myMsg[i]->msg,myMsg[i]->idx);
+//        printf("%s %s\n",myMsg[i]->msg,myMsg[i]->idx);
     }
 
-//    key_t key = ftok("shmfile",50);
-//    int shmid = shmget(key,1024,0666|IPC_CREAT);
+    // open shared memory
+
+    key_t key = ftok("shmfile",50);
+    int shmid = shmget(key,1024,0666|IPC_CREAT);
+
+    sender = (struct message*) shmat(shmid,NULL,0);
+
+    int curr=0;
+    while(curr<num){
+        int i;
+        for(i=curr;i<curr+5;i++){
+            sem_wait(sem);
+            sender = myMsg[i];
+            sem_post(sem);
+        }
+        curr=i;
+
+        sem_wait(sem);
+        int ans=0;
+        int j = 0;
+        while(sender->idx[j]!='\0'){
+            ans *= 10;
+            ans += (int)((sender->idx[j]-'0'));
+            i++;
+        }
+        if(ans==curr){
+            //received back from p2
+            printf("received p1: %s\n",sender->idx);
+        }
+        sem_post(sem);
+    }
+
 
     return 0;
 }
