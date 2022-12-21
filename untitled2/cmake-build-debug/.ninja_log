@@ -1,8 +1,8 @@
 # ninja log v5
-1	302	6932496708242393	build.ninja	e414a6c2342ab292
+1	302	6932964677688981	build.ninja	e414a6c2342ab292
+20	367	6932537918083317	CMakeFiles/untitled2.dir/aaryan1.c.obj	e7641806ed5083e4
 11	127	6932420335017525	CMakeFiles/untitled2.dir/test.c.obj	b60739da435a2872
 127	314	6932420336835021	untitled2.exe	fdcd42f8b5961390
 3	85	6932420334587594	CMakeFiles/untitled2.dir/p1mine.c.obj	7df602910dfc65c7
 17	245	6932440704616257	CMakeFiles/untitled2.dir/p2mine.c.obj	69726fcfffa74827
 41	348	6932537917887888	CMakeFiles/untitled2.dir/aaryan2.c.obj	9d2ff6bc1ce80d62
-20	367	6932537918083317	CMakeFiles/untitled2.dir/aaryan1.c.obj	e7641806ed5083e4
