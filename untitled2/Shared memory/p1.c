@@ -13,14 +13,6 @@
 
 #define len 9
 #define num 50
-#define semfile "semaphorefile"
-
-char* semName= "sem1";
-
-struct message{
-    char msg[10];
-    char* idx;
-};
 
 
 void acquire(char** sem){

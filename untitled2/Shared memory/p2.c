@@ -47,7 +47,6 @@ int main(){
             release(&send);
         }
         curr+=5;
-//        printf("max id sent: %d\n",curr-1);
     }
     return 0;
 }
