@@ -18,12 +18,11 @@
 
 void acquire(char** sem){
     while(strcmp(*sem,"wait")==0){
-
     }
 }
 
 void release(char** sem){
-    strcpy(*sem,"go");
+    strcpy(*sem,"wait");
 }
 
 
@@ -40,6 +39,7 @@ int main(){
         for(int i=curr;i<curr+5;i++){
             acquire(&send);
             printf("received : %s\n",send);
+            release(&send);
         }
         printf("max id sent: %d\n",curr+4);
     }

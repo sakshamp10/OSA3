@@ -24,9 +24,8 @@ struct message{
 
 
 void acquire(char** sem){
-    while(strcmp(*sem,"wait")==0){
+    while(strcmp(*sem,"wait")!=0){
     }
-    strcpy(*sem,"wait");
 }
 
 void release(char** sem){
@@ -69,8 +68,8 @@ int main(){
 
     send = (char*) shmat(shmid,NULL,0);
     for(int i=0;i<num;){
-        int j=0;
-        while(j<5){
+        int j=i;
+        while(j<i+5){
             acquire(&send);
             strcpy(send,msg[i]);
             j++;
