@@ -7,8 +7,8 @@
 #include<fcntl.h>
 #include<errno.h>
 #include<unistd.h>
-//#include<sys/ipc.h>
-//#include<sys/shm.h>
+#include<sys/ipc.h>
+#include<sys/shm.h>
 #include <semaphore.h>
 
 #define len 9
