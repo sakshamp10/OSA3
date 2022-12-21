@@ -70,8 +70,8 @@ int main(){
     for(int i=0;i<num;){
         int j=i;
         while(j<i+5){
-            acquire(&send);
             strcpy(send,msg[i]);
+            acquire(&send);
             j++;
         }
         i+=j;
