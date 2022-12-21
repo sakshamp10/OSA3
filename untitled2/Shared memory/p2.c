@@ -43,7 +43,7 @@ int main(){
         int i=curr;
         for(;i<min(curr+5,num);i++){
             acquire(&send);
-            printf("received : %s\n",send);
+            printf("received by p2 : %s\n",send);
             release(&send);
         }
         curr+=5;
