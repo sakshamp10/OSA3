@@ -17,8 +17,8 @@
 
 
 void acquire(int sf){
-    char a = '1';
-    while(a==NULL || a=='1' || a=='\n'){
+    char* a = "1";
+    while(strcmp(a,"1")==0 || a==NULL){
         lseek(sf,0,SEEK_SET);
         read(sf,&a,1);
     }
