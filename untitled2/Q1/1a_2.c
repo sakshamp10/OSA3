@@ -19,6 +19,7 @@ void *thinking_start(void *philosopher){
 
         if(st){
             printf("Encountered error while in Lock()\n");
+            exit(-1);
         }
 
 
@@ -27,6 +28,7 @@ void *thinking_start(void *philosopher){
 
         if(st){
             printf("Encountered in Lock()\n");
+            exit(-1);
         }
 
 
@@ -37,6 +39,7 @@ void *thinking_start(void *philosopher){
 
         if(st){
             printf("Encountered error in Unlock()\n");
+            exit(-1);
         }
 
         printf("Philosoper no. %d puts the Fork no. %d\n",phil_pos,((phil_pos-1)%5)+1);
@@ -44,6 +47,7 @@ void *thinking_start(void *philosopher){
 
         if(st){
             printf("Encountered error in Unlock()\n");
+            exit(-1);
         }
 
         printf("Philosopher no. %d puts down Fork no. %d\n",phil_pos,((phil_pos)%5)+1);
@@ -58,6 +62,7 @@ int main(){
         st=pthread_mutex_init(&forks[i],NULL);
         if(st){
             printf("Encountered error in sem_init()\n");
+            exit(-1);
         }
     }
     printf("*************************************\n");
