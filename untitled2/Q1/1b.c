@@ -4,7 +4,6 @@
 #include<unistd.h>
 #include<stdlib.h>
 #include<string.h>
-int deadlock=0;
 
 sem_t forks[5],bowl1,bowl2;
 int bowl1un,bowl2un;
@@ -13,7 +12,7 @@ int bowl1un,bowl2un;
 void *thinking_start(void *philosopher){
     int flag=0;
     int phil_pos=*(int*)philosopher;
-    while(100){
+    while(1){
         int b1,b2;
         int st;
         if(flag==0){

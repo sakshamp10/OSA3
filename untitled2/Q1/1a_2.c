@@ -7,13 +7,14 @@
 int deadlock=0;
 pthread_mutex_t forks[5];
 
+
 void *thinking_start(void *philosopher){
     int st;
     int phil_pos=*(int*)philosopher;
     while(1){
-        printf("Philosopher no. %d is Thinking right now\n",phil_pos-1);
+        printf("Philosopher no. %d is Thinking right now\n",phil_pos);
         sleep(1);
-        printf("Philosopher no. %d is Hungry right now\n",phil_pos-1);
+        printf("Philosopher no. %d is Hungry right now\n",phil_pos);
         st=pthread_mutex_lock(&forks[(phil_pos-1)%5]);
 
         if(st){
