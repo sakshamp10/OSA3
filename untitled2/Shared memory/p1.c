@@ -25,31 +25,27 @@ int idxsize(int i){
         return 2;
     }
 }
-void generate_strings(struct message** myMsg){
+void generate_strings(struct message** myMsg, int curr){
     srand(time(NULL));
     *myMsg = (struct message*) malloc(num*sizeof(struct message));
-    int curr = 0;
-    for(;curr<num;curr++)
-    {
-        (*myMsg)[curr].idx = (char*) malloc(idxsize(curr)*sizeof(char));
+        (*myMsg)->idx = (char*) malloc(idxsize(curr)*sizeof(char));
 
         if(curr>=10){
-            (*myMsg)[curr].idx[0] = '0'+curr/10;
-            (*myMsg)[curr].idx[1] = '0'+curr%10;
-            (*myMsg)[curr].idx[2] ='\0';
+            (*myMsg)->idx[0] = '0'+curr/10;
+            (*myMsg)->idx[1] = '0'+curr%10;
+            (*myMsg)->idx[2] ='\0';
         }
         else{
-            (*myMsg)[curr].idx[0] = '0'+curr;
-            (*myMsg)[curr].idx[1] = '\0';
+            (*myMsg)->idx[0] = '0'+curr;
+            (*myMsg)->idx[1] = '\0';
         }
 
         int i=0;
         while( (i) <= len-2){
-            (*myMsg)[curr].msg[i] = 65 + rand()%26;
+            (*myMsg)->msg[i] = 65 + rand()%26;
             i++;
         }
-        (*myMsg)[curr].msg[len-1] = '\0';
-    }
+        (*myMsg)->msg[len-1] = '\0';
 }
 
 int main(){
@@ -70,7 +66,7 @@ int main(){
 
 
     for(int i=0;i<num;i++){
-        generate_strings(&myMsg[i]);
+        generate_strings(&myMsg[i],i);
         printf("%s %s\n",myMsg[i]->msg,myMsg[i]->idx);
     }
 
