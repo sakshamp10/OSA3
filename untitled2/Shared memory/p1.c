@@ -78,8 +78,8 @@ int main(){
             strcpy(send,msg[j]);
             j++;
         }
-        i+=4;
-        printf("MAX ID received: %d\n",j);
+        i=j;
+        printf("MAX ID received: %d\n",i);
 
     }
 
