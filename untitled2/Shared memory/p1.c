@@ -73,6 +73,6 @@ int main(){
         i=j;
         printf("MAX ID received by p1: %d\n",i-1);
     }
-    free(send);
+
     return 0;
 }
