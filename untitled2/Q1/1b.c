@@ -13,24 +13,23 @@ int bowl1un,bowl2un;
 void *thinking_start(void *philosopher){
     int flag=0;
     int phil_pos=*(int*)philosopher;
-    phil_pos++;
     while(100){
         int b1,b2;
         int st;
         if(flag==0){
-            printf("Philosopher at Position %d is Thinking right now\n",phil_pos-1);
+            printf("Philosopher at Position %d is Thinking right now\n",phil_pos);
             sleep(1);
-            printf("Philosopher at Position %d is Hungry right now\n",phil_pos-1);
+            printf("Philosopher at Position %d is Hungry right now\n",phil_pos);
             st=sem_wait(&forks[(phil_pos-1)%5]);
             if(st){
                 printf("Encountered error while executing sem_wait()\n");
             }
-            printf("Philosoper at Position %d takes the Fork at Position %d\n",phil_pos-1,((phil_pos-1)%5)+1);
+            printf("Philosoper at Position %d takes the Fork at Position %d\n",phil_pos,((phil_pos-1)%5)+1);
             st=sem_wait(&forks[(phil_pos)%5]);
             if(st){
                 printf("Encountered error while executing sem_wait()\n");
             }
-            printf("Philosoper at Position %d takes the Fork at Position %d\n",phil_pos-1,(phil_pos%5)+1);
+            printf("Philosoper at Position %d takes the Fork at Position %d\n",phil_pos,(phil_pos%5)+1);
             flag=1;
             sem_getvalue(&bowl1,&b1);
             sem_getvalue(&bowl2,&b2);
@@ -41,7 +40,7 @@ void *thinking_start(void *philosopher){
                 printf("Encountered error while executing sem_wait()\n");
             }
 
-            printf("Philosopher at Position %d is Eating right now from Bowl1\n",phil_pos-1);
+            printf("Philosopher at Position %d is Eating right now from Bowl1\n",phil_pos);
             sleep(1);
             st=sem_post(&bowl1);
             if(st){
@@ -53,12 +52,12 @@ void *thinking_start(void *philosopher){
                 printf("Encountered error while executing sem_post()\n");
             }
 
-            printf("Philosoper at Position %d puts the Fork at Position %d\n",phil_pos-1,((phil_pos-1)%5)+1);
+            printf("Philosoper at Position %d puts the Fork at Position %d\n",phil_pos,((phil_pos-1)%5)+1);
             st=sem_post(&forks[(phil_pos)%5]);
             if(st){
                 printf("Encountered error while executing sem_post()\n");
             }
-            printf("Philosoper at Position %d puts the Fork at Position %d\n",phil_pos-1,((phil_pos)%5)+1);
+            printf("Philosoper at Position %d puts the Fork at Position %d\n",phil_pos,((phil_pos)%5)+1);
             flag=0;
         }
         else if(bowl2un==b2){
@@ -67,7 +66,7 @@ void *thinking_start(void *philosopher){
             if(st){
                 printf("Encountered error while executing sem_wait()\n");
             }
-            printf("Philosopher at Position %d is Eating right now from Bowl2\n",phil_pos-1);
+            printf("Philosopher at Position %d is Eating right now from Bowl2\n",phil_pos);
             sleep(1);
             st=sem_post(&bowl2);
             if(st){
@@ -78,12 +77,12 @@ void *thinking_start(void *philosopher){
             if(st){
                 printf("Encountered error while executing sem_post()\n");
             }
-            printf("Philosoper at Position %d puts the Fork at Position %d\n",phil_pos-1,((phil_pos-1)%5)+1);
+            printf("Philosoper at Position %d puts the Fork at Position %d\n",phil_pos,((phil_pos-1)%5)+1);
             st=sem_post(&forks[(phil_pos)%5]);
             if(st){
                 printf("Encountered error while executing sem_post()\n");
             };
-            printf("Philosoper at Position %d puts the Fork at Position %d\n",phil_pos-1,((phil_pos)%5)+1);
+            printf("Philosoper at Position %d puts the Fork at Position %d\n",phil_pos,((phil_pos)%5)+1);
             flag=0;
         }
     }
