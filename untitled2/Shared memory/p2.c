@@ -11,51 +11,45 @@
 #include<sys/shm.h>
 #include <semaphore.h>
 
-#define len 6
+#define len 8
 #define num 50
+#define semfile "semaphorefile"
 
-char* semName= "sem1";
 
-struct message{
-    char msg[10];
-    char* idx;
-};
-
-int idxsize(int i){
-    if(i>=10){
-        return 3;
+void acquire(int sf){
+    char a = '1';
+    while(a==NULL || a=='1' || a=='\n'){
+        lseek(sf,0,SEEK_SET);
+        read(sf,&a,1);
     }
-    else{
-        return 2;
-    }
+    write(sf,"0",1);
+}
+
+void release(int sf){
+    lseek(sf,0,SEEK_SET);
+    write(sf,"1",1);
 }
 
 
+
 int main(){
-
-    struct message* sender ,*receiver;
-    sender=(struct message*)malloc(sizeof(struct message));
-    sender->idx=(char*)malloc(3*sizeof(char));
-    receiver=(struct message*)malloc(sizeof(struct message));
-    receiver->idx=(char*)malloc(3*sizeof(char));
-
-    sem_t *sem = sem_open(semName,0,0666,0);
-
-
+    char* send=(char*)malloc((len)*sizeof(char));
     key_t key = ftok("shmfile",50);
     int shmid = shmget(key,1024,0666|IPC_CREAT);
 
-    sender = (struct message*)shmat(shmid,NULL,0);
+    send = (char*)shmat(shmid,NULL,0);
 
+    int sf = open(semfile,O_RDWR|O_CREAT,0666);
 
-    for(int i=0;i<5;i++){
-        sem_wait(sem);
-        receiver = sender;
-        printf("received p2: %s %s\n",sender->msg,sender->idx);
-        sem_post(sem);
+    int curr=0;
+    while(curr<num){
+        for(int i=curr;i<curr+5;i++){
+            acquire(sf);
+            printf("received : %s\n",send);
+            release(sf);
+        }
+        printf("max id sent: %d\n",curr+4);
     }
-    printf("sent p2: %s\n",receiver->idx);
-
 
     return 0;
 }
