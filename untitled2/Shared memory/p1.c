@@ -25,7 +25,7 @@ int idxsize(int i){
         return 2;
     }
 }
-void generate_strings(struct message* myMsg[50]){
+void generate_strings(struct message** myMsg){
     srand(time(NULL));
     *myMsg = (struct message*) malloc(num*sizeof(struct message));
     int curr = 0;
@@ -67,9 +67,10 @@ int main(){
         myMsg[i]->idx=(char*)malloc(idxsize(i)*sizeof(char));
     }
 
-    generate_strings(myMsg);
+
 
     for(int i=0;i<num;i++){
+        generate_strings(&myMsg[i]);
         printf("%s %s\n",myMsg[i]->msg,myMsg[i]->idx);
     }
 
