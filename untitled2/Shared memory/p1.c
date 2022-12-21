@@ -74,8 +74,8 @@ int main(){
     for(int i=0;i<num;){
         int j=i;
         while(j<min(i+5,num)){
-            acquire(&send);
             strcpy(send,msg[j]);
+            acquire(&send);
             j++;
         }
         i=j;
