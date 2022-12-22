@@ -56,7 +56,7 @@ void *thinking_start(void *philosopher){
 }
 int main(){
     pthread_t philosophers[5];
-    int sequencing[]={1,2,3,4,5};
+    int phil_positions[]={1,2,3,4,5};
     int st;
     for(int i=0;i<5;i++){
         st=pthread_mutex_init(&forks[i],NULL);
@@ -70,7 +70,7 @@ int main(){
     printf("Number of Forks: %d\n\n\n",5);
 
     for(int i=0;i<5;i++){
-        st=pthread_create(&philosophers[i],NULL,thinking_start,&sequencing[i]);
+        st=pthread_create(&philosophers[i],NULL,thinking_start,&phil_positions[i]);
         if(st){
             printf("Error! Error Encountered while creating the threads\n");
             return 1;
