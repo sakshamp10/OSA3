@@ -66,14 +66,14 @@ int main(){
     for(int i=0;i<5;i++){
         st=pthread_create(&philosophers[i],NULL,thinking_start,&phil_positions[i]);
         if(st){
-            printf("Error! Error Encountered while creating the threads\n");
+            printf("Error! Error in creating the threads\n");
             return 1;
         }
     }
     for(int i=0;i<5;i++){
         st=pthread_join(philosophers[i],NULL);
         if(st){
-            printf("Error! Error Encountered while joining the threads\n");
+            printf("Error! Error in joining the threads\n");
             return 1;
         }
     }
