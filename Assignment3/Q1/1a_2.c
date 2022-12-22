@@ -4,7 +4,7 @@
 #include<unistd.h>
 #include<stdlib.h>
 #include<string.h>
-int deadlock=0;
+//int deadlock=0;
 pthread_mutex_t forks[5];
 
 
