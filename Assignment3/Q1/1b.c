@@ -5,9 +5,10 @@
 #include<stdlib.h>
 #include<string.h>
 
-sem_t forks[5],bowl1,bowl2;
-int bowl1_sval,bowl2_sval;
-
+int bowl2_sval;
+int bowl1_sval;
+sem_t forks[5];
+sem_t bowl1,bowl2;
 
 void *thinking_start(void *philosopher){
     int flag=0;
