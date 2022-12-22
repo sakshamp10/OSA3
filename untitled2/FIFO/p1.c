@@ -1,13 +1,13 @@
 #include<stdio.h>
-#include<stdlib.h>
 #include<string.h>
 #include<time.h>
-#include<sys/stat.h>
-#include<sys/types.h>
 #include<fcntl.h>
+#include<stdlib.h>
 #include<errno.h>
-#include<unistd.h>
+#include<sys/stat.h>
 #include <math.h>
+#include<sys/types.h>
+#include<unistd.h>
 
 #define len 6
 #define num 50
@@ -144,11 +144,11 @@ int main(int argc, const char* argv[]){
     clock_gettime(CLOCK_REALTIME,&t1);
     while(start<num){
         sender(myMsg, 5, &start);
-//        sleep(1);
+        sleep(0.5);
         start = receive(&myMsg, &start);
         start++;
         printf("\n\n");
-//        sleep(0.5);
+        sleep(0.5);
     }
     clock_gettime(CLOCK_REALTIME,&t2);
     printf("time taken in FIFO mode= %lf\n", fabs(((t2.tv_sec-t1.tv_sec)+(t2.tv_nsec-t1.tv_nsec)/1e9)));

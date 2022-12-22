@@ -136,7 +136,7 @@ int main(int argc, const char* argv[]){
         printf("Received data:\n");
         receive(&myData, &st);
         printf("\n\n");
-//        sleep(1);
+        sleep(0.5);
         printf("Sent data:\n");
         send_str(myData ,&st);
         printf("\n\n");

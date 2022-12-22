@@ -1,12 +1,12 @@
 #include<stdio.h>
-#include<stdlib.h>
 #include<string.h>
-#include<time.h>
+#include<unistd.h>
+#include<fcntl.h>
 #include<sys/stat.h>
 #include<sys/types.h>
-#include<fcntl.h>
 #include<errno.h>
-#include<unistd.h>
+#include<stdlib.h>
+#include<time.h>
 
 char* FIFO = "./fifo";
 #define len 6
@@ -83,13 +83,11 @@ int main(int argc, const char* argv[]){
 	
 	int start=0;
 	while(start<num){
-//        printf("Received data:\n");
 		receive(&myData, &start);
-//		sleep(0.5);
-//		printf("Sent data:\n");
+		sleep(0.5);
 		send_last_rand_str(myData, &start);
         printf("\n\n");
-//		sleep(1);
+		sleep(0.5);
 	}
 
     return 0;

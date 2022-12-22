@@ -1,15 +1,16 @@
-#include<math.h>
 #include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include<time.h>
-#include<sys/stat.h>
 #include<sys/types.h>
-#include<fcntl.h>
-#include<errno.h>
+#include<math.h>
 #include<unistd.h>
 #include<sys/socket.h>
+#include<stdlib.h>
+#include<time.h>
+#include<fcntl.h>
+#include<string.h>
+#include<sys/stat.h>
 #include<sys/un.h>
+#include<errno.h>
+
 
 #define MAX_MESSAGE_SIZE 6
 #define len 6
@@ -56,7 +57,6 @@ void generate_strings(struct message** myMsg){
     {
         (*myMsg)[curr].msg = (char*) malloc((len)*sizeof(char));
         (*myMsg)[curr].idx = (char*) malloc(idxsize(curr)*sizeof(char));
-//        int_to_char(curr, &(*myMsg)[curr].idx);
 
         if(curr>=10){
             (*myMsg)[curr].idx[0] = '0'+curr/10;
@@ -76,7 +76,7 @@ void generate_strings(struct message** myMsg){
             i++;
         }
         (*myMsg)[curr].msg[len-1] = '\0';
-//        curr++;
+
     }
 }
 
@@ -105,11 +105,8 @@ void sender(struct message* myMsg, int t, int* start){
     int i=*start;
     while(i<min(*start+t,num))
     {
-        // printf("Write a message: ");
         sendto(fd, myMsg[i].idx, (idxsize(i)), 0, (struct sockaddr*) &destination, sizeof(destination));
         sendto(fd, myMsg[i].msg, len, 0, (struct sockaddr*) &destination, sizeof(destination));
-        // connection_fd is marked as connected
-        // and it knows where the message should be directed
         printf("%s %s\n", myMsg[i].idx, myMsg[i].msg);
         i++;
     }
@@ -146,7 +143,6 @@ int receive(struct message** myMsg, int *start){
     size_t size;
 
 
-    // printf("Write a message: ");
     size = recvfrom(fd, temp->idx, (idxsize(*start)), 0, (struct sockaddr *) &emitter, &length);
     if(size != -1) {}
     else{
@@ -163,8 +159,6 @@ int receive(struct message** myMsg, int *start){
         perror("Receiver"); exit(EXIT_FAILURE);
     }
 
-    // connection_fd is marked as connected
-    // and it knows where the message should be directed
     printf("%s\n", temp->idx);
     int ans=0;
     int i = 0;
@@ -196,7 +190,7 @@ int main(int argc, const char* argv[]){
         start = receive(&myMsg, &start);
         start++;
         printf("----------------\n");
-//        sleep(1);
+        sleep(0.5);
     }
     clock_gettime(CLOCK_REALTIME,&t2);
     printf("time taken in socket mode= %lf\n", fabs(((t2.tv_sec-t1.tv_sec)+(t2.tv_nsec-t1.tv_nsec)/1e9)));

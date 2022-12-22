@@ -14,7 +14,6 @@
 
 #define len 8
 #define num 50
-#define semfile "semaphorefile"
 
 
 void acquire(char** sem){
@@ -37,9 +36,9 @@ int main(){
     key_t key = ftok("shmfile",50);
     int shmid = shmget(key,1024,0666|IPC_CREAT);
 
+    int curr=0;
     send = (char*)shmat(shmid,NULL,0);
 
-    int curr=0;
     while(curr<num){
         int i=curr;
         for(;i<min(curr+5,num);i++){
