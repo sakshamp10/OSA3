@@ -10,6 +10,7 @@
 #include<sys/ipc.h>
 #include<sys/shm.h>
 #include <semaphore.h>
+#include <math.h>
 
 #define len 9
 #define num 50
@@ -62,6 +63,8 @@ int main(){
     key_t key = ftok("shmfile",50);
     int shmid = shmget(key,1024,0666|IPC_CREAT);
 
+    struct timespec t1,t2;
+    clock_gettime(CLOCK_REALTIME,&t1);
     send = (char*) shmat(shmid,NULL,0);
     for(int i=0;i<num;){
         int j=i;
@@ -73,6 +76,7 @@ int main(){
         i=j;
         printf("MAX ID received by p1: %d\n",i-1);
     }
-
+    clock_gettime(CLOCK_REALTIME,&t2);
+    printf("time taken in socket mode= %lf\n", fabs(((t2.tv_sec-t1.tv_sec)+(t2.tv_nsec-t1.tv_nsec)/1e9)));
     return 0;
 }

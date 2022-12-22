@@ -10,6 +10,7 @@
 #include<sys/ipc.h>
 #include<sys/shm.h>
 #include <semaphore.h>
+#include <math.h>
 
 #define len 8
 #define num 50
@@ -48,6 +49,5 @@ int main(){
         }
         curr+=5;
     }
-
     return 0;
 }

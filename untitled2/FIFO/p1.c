@@ -7,6 +7,7 @@
 #include<fcntl.h>
 #include<errno.h>
 #include<unistd.h>
+#include <math.h>
 
 #define len 6
 #define num 50
@@ -14,8 +15,8 @@ char* FIFO="./fifo";
 
 
 struct myStruct{
-    char* myIdx;
-    char* myStr;
+    char* idx;
+    char* msg;
 };
 
 int min(int a, int b){
@@ -47,36 +48,36 @@ int idxsize(int i){
     else return 2;
 }
 
-void generate_n_rand_str(struct myStruct** myData){
+void generate_strings(struct myStruct** myMsg){
     srand(time(NULL));
-    *myData = (struct myStruct*) malloc(num*sizeof(struct myStruct));
+    *myMsg = (struct myStruct*) malloc(num*sizeof(struct myStruct));
     int curr = 0;
     for(;curr<num;curr++)
     {
-        (*myData)[curr].myStr = (char*) malloc((len)*sizeof(char));
-        (*myData)[curr].myIdx = (char*) malloc(idxsize(curr)*sizeof(char));
-        int_to_char(curr, &(*myData)[curr].myIdx);
+        (*myMsg)[curr].msg = (char*) malloc((len)*sizeof(char));
+        (*myMsg)[curr].idx = (char*) malloc(idxsize(curr)*sizeof(char));
+        int_to_char(curr, &(*myMsg)[curr].idx);
 
         if(curr>=10){
-            (*myData)[curr].myIdx[0] = '0'+curr/10;
-            (*myData)[curr].myIdx[1] = '0'+curr%10;
-            (*myData)[curr].myIdx[2] ='\0';
+            (*myMsg)[curr].idx[0] = '0'+curr/10;
+            (*myMsg)[curr].idx[1] = '0'+curr%10;
+            (*myMsg)[curr].idx[2] ='\0';
         }
         else{
-            (*myData)[curr].myIdx[0] = '0'+curr;
-            (*myData)[curr].myIdx[1] = '\0';
+            (*myMsg)[curr].idx[0] = '0'+curr;
+            (*myMsg)[curr].idx[1] = '\0';
         }
 
         int i=0;
         while( (i) <= len-2){
-            (*myData)[curr].myStr[i] = 65 + rand()%26;
+            (*myMsg)[curr].msg[i] = 65 + rand()%26;
             i++;
         }
-        (*myData)[curr].myStr[len-1] = '\0';
+        (*myMsg)[curr].msg[len-1] = '\0';
     }
 }
 
-void send_t_rand_str(struct myStruct* myData, int t, int* start){
+void sender(struct myStruct* myMsg, int t, int* start){
     // Creating FIFO
     umask(0);
     if(mknod(FIFO, S_IFIFO | 0660, 0) == 0){
@@ -91,21 +92,21 @@ void send_t_rand_str(struct myStruct* myData, int t, int* start){
     // Writing
     int f1 = open(FIFO, O_WRONLY);
     for(int i=*start; i<min(*start+t,num); i++){
-        printf("p1 sent:%s %s\n", myData[i].myIdx, myData[i].myStr);
-        write(f1, myData[i].myIdx, idxsize(i));
-        write(f1, myData[i].myStr, len);
+        printf("p1 sent:%s %s\n", myMsg[i].idx, myMsg[i].msg);
+        write(f1, myMsg[i].idx, idxsize(i));
+        write(f1, myMsg[i].msg, len);
     }
     close(f1);
 
 }
 
-int receive_last_rand_str(struct myStruct** myData, int *start){
+int receive(struct myStruct** myMsg, int *start){
     struct myStruct* temp = (struct myStruct*) malloc(sizeof(struct myStruct));
-    temp->myIdx = (char*) malloc((idxsize(*start-1))*sizeof(char));
-    temp->myStr = (char*) malloc(len*sizeof(char));
+    temp->idx = (char*) malloc((idxsize(*start-1))*sizeof(char));
+    temp->msg = (char*) malloc(len*sizeof(char));
     // Creating FIFO
     umask(0);
-    if(mknod(FIFO, S_IFIFO | 0660, 0) == 0){
+    if(mknod(FIFO, S_IFIFO | 0660, 0) != 0){
         printf("FIFO created successfully\n");
 
     }
@@ -118,16 +119,16 @@ int receive_last_rand_str(struct myStruct** myData, int *start){
 
     // Reading
     int fd = open(FIFO, O_RDONLY);
-    read(fd, temp->myIdx, (idxsize(*start-1)));
-    read(fd, temp->myStr, len);
-    printf("p1 received max index: %s\n", temp->myIdx);
+    read(fd, temp->idx, (idxsize(*start-1)));
+    read(fd, temp->msg, len);
+    printf("p1 received max index: %s\n", temp->idx);
     close(fd);
 
     int ans=0;
     int i = 0;
-    while(temp->myIdx[i]!='\0'){
+    while(temp->idx[i]!='\0'){
         ans *= 10;
-        ans += (int)((temp->myIdx[i]-'0'));
+        ans += (int)((temp->idx[i]-'0'));
         i++;
     }
     return ans;
@@ -135,20 +136,22 @@ int receive_last_rand_str(struct myStruct** myData, int *start){
 }
 
 int main(int argc, const char* argv[]){
-    struct myStruct* myData;
-    generate_n_rand_str(&myData) ;
+    struct myStruct* myMsg;
+    generate_strings(&myMsg) ;
 
     int start = 0;
+    struct timespec t1,t2;
+    clock_gettime(CLOCK_REALTIME,&t1);
     while(start<num){
-//        printf("Sent data(1):\n");
-        send_t_rand_str(myData, 5, &start);
+        sender(myMsg, 5, &start);
         sleep(1);
-//        printf("Received data(1):\n");
-        start = receive_last_rand_str(&myData, &start);
+        start = receive(&myMsg, &start);
         start++;
         printf("\n\n");
         sleep(0.5);
     }
+    clock_gettime(CLOCK_REALTIME,&t2);
+    printf("time taken in socket mode= %lf\n", fabs(((t2.tv_sec-t1.tv_sec)+(t2.tv_nsec-t1.tv_nsec)/1e9)));
 
     return 0;
 }

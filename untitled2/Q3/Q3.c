@@ -10,21 +10,21 @@ MODULE_AUTHOR("Saksham");
 MODULE_DESCRIPTION("assmnt_3_OS");
 MODULE_VERSION("0.01");
 
-int pid = 0;
-module_param(pid, int, 0);
+int x = 0;
+module_param(x, int, 0);
 
 static int __init init_os(void)
 {
-    struct task_struct *t1;
-    t1 = pid_task(find_vpid(pid), PIDTYPE_PID);
-    if (!t1)
+    struct task_struct *task;
+    task = pid_task(find_vpid(x), PIDTYPE_PID);
+    if (!task)
     {
         return -ESRCH;
     }
-    printk(KERN_INFO "The pid is: %d\n", t1->pid);
-    printk(KERN_INFO "The uid is: %d\n", t1->cred->uid.val);
-    printk(KERN_INFO "The pgid is: %d\n", t1->group_leader->pid);
-    printk(KERN_INFO "The comm is: %s\n", t1->comm);
+    printk(KERN_INFO "pid :%d\n", task->pid);
+    printk(KERN_INFO "uid : %d\n", task->cred->uid.val);
+    printk(KERN_INFO "pgid : %d\n", task->group_leader->pid);
+    printk(KERN_INFO "comm : %s\n", task->comm);
     return 0;
 }
 static void __exit exit_os(void)

@@ -20,11 +20,11 @@ int idxsize(int i){
 }
 
 struct myStruct{
-    char* myIdx;
-    char* myStr;
+    char* idx;
+    char* str;
 };
 
-void receive_t_rand_str(struct myStruct** myData, int* start){
+void receive(struct myStruct** myData, int* start){
 	// Creating the pipe
 	umask(0);
 	if(mknod(FIFO, S_IFIFO | 0660, 0) == 0){
@@ -39,9 +39,9 @@ void receive_t_rand_str(struct myStruct** myData, int* start){
 
 	// Reading
 	int fd = open(FIFO, O_RDONLY);
-    while(read(fd, (*myData)[*start].myIdx, (idxsize(*start)))>0){
-		read(fd, (*myData)[*start].myStr, len);
-		printf("p2 got:%s %s\n", (*myData)[*start].myIdx, (*myData)[*start].myStr);
+    while(read(fd, (*myData)[*start].idx, (idxsize(*start)))>0){
+		read(fd, (*myData)[*start].str, len);
+		printf("p2 got:%s %s\n", (*myData)[*start].idx, (*myData)[*start].str);
 		*start=*start+1;
 		if(*start<num){
 			continue;
@@ -66,9 +66,9 @@ void send_last_rand_str(struct myStruct* myData, int *start){
     }
 	// Writing
 	int f1 = open(FIFO, O_WRONLY);
-	write(f1, myData[*start-1].myIdx, (idxsize(*start-1)));
-	write(f1, myData[*start-1].myStr, len);
-	printf("p2 sent max index: %s\n", myData[*start-1].myIdx);
+	write(f1, myData[*start-1].idx, (idxsize(*start-1)));
+	write(f1, myData[*start-1].str, len);
+	printf("p2 sent max index: %s\n", myData[*start-1].idx);
 	close(f1);
 }
 
@@ -77,14 +77,14 @@ int main(int argc, const char* argv[]){
     struct myStruct *myData = (struct myStruct*) malloc(num*sizeof(struct myStruct));
 	
 	for (int i = 0; i < num; i++){
-        myData[i].myStr = (char*) malloc((len)*sizeof(char));
-        myData[i].myIdx = (char*) malloc((idxsize(i))*sizeof(char));
+        myData[i].str = (char*) malloc((len)*sizeof(char));
+        myData[i].idx = (char*) malloc((idxsize(i))*sizeof(char));
 	}
 	
 	int start=0;
 	while(start<num){
 //        printf("Received data:\n");
-		receive_t_rand_str(&myData, &start);
+		receive(&myData, &start);
 		sleep(0.5);
 //		printf("Sent data:\n");
 		send_last_rand_str(myData, &start);

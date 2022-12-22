@@ -1,4 +1,4 @@
-
+#include<math.h>
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
@@ -23,9 +23,9 @@ int min(int a , int b){
     else return a;
 }
 
-struct myStruct{
-    char* myIdx;
-    char* myStr;
+struct message{
+    char* idx;
+    char* msg;
 };
 
 int idxsize(int i){
@@ -48,39 +48,39 @@ void int_to_char(int curr, char **ptr){
 }
 
 
-void generate_n_rand_str(struct myStruct** myData){
+void generate_strings(struct message** myMsg){
     srand(time(NULL));
-    *myData = (struct myStruct*) malloc(num*sizeof(struct myStruct));
+    *myMsg = (struct message*) malloc(num*sizeof(struct message));
     int curr = 0;
     for(curr=0;curr<num;curr++)
     {
-        (*myData)[curr].myStr = (char*) malloc((len)*sizeof(char));
-        (*myData)[curr].myIdx = (char*) malloc(idxsize(curr)*sizeof(char));
-//        int_to_char(curr, &(*myData)[curr].myIdx);
+        (*myMsg)[curr].msg = (char*) malloc((len)*sizeof(char));
+        (*myMsg)[curr].idx = (char*) malloc(idxsize(curr)*sizeof(char));
+//        int_to_char(curr, &(*myMsg)[curr].idx);
 
         if(curr>=10){
-            (*myData)[curr].myIdx[0] = '0'+curr/10;
-            (*myData)[curr].myIdx[1] = '0'+curr%10;
-            (*myData)[curr].myIdx[2] ='\0';
+            (*myMsg)[curr].idx[0] = '0'+curr/10;
+            (*myMsg)[curr].idx[1] = '0'+curr%10;
+            (*myMsg)[curr].idx[2] ='\0';
         }
         else{
-            (*myData)[curr].myIdx[0] = '0'+curr;
-            (*myData)[curr].myIdx[1] = '\0';
+            (*myMsg)[curr].idx[0] = '0'+curr;
+            (*myMsg)[curr].idx[1] = '\0';
         }
 
 
         int i=0;
         while(i<len-1)
         {
-            (*myData)[curr].myStr[i] = 65 + rand()%26;
+            (*myMsg)[curr].msg[i] = 65 + rand()%26;
             i++;
         }
-        (*myData)[curr].myStr[len-1] = '\0';
+        (*myMsg)[curr].msg[len-1] = '\0';
 //        curr++;
     }
 }
 
-void send_t_rand_str(struct myStruct* myData, int t, int* start){
+void send(struct message* myMsg, int t, int* start){
     struct sockaddr_un address;
     int fd;
 
@@ -106,18 +106,18 @@ void send_t_rand_str(struct myStruct* myData, int t, int* start){
     while(i<min(*start+t,num))
     {
         // printf("Write a message: ");
-        sendto(fd, myData[i].myIdx, (idxsize(i)), 0, (struct sockaddr*) &destination, sizeof(destination));
-        sendto(fd, myData[i].myStr, len, 0, (struct sockaddr*) &destination, sizeof(destination));
+        sendto(fd, myMsg[i].idx, (idxsize(i)), 0, (struct sockaddr*) &destination, sizeof(destination));
+        sendto(fd, myMsg[i].msg, len, 0, (struct sockaddr*) &destination, sizeof(destination));
         // connection_fd is marked as connected
         // and it knows where the message should be directed
-        printf("%s %s\n", myData[i].myIdx, myData[i].myStr);
+        printf("%s %s\n", myMsg[i].idx, myMsg[i].msg);
         i++;
     }
 
     close(fd);
 }
 
-int receive_last_rand_str(struct myStruct** myData, int *start){
+int receive(struct message** myMsg, int *start){
     struct sockaddr_un address;
     int fd;
     fd = socket(AF_UNIX, SOCK_DGRAM, 0);
@@ -140,22 +140,24 @@ int receive_last_rand_str(struct myStruct** myData, int *start){
     struct sockaddr_un emitter;
     socklen_t length;
 
-    struct myStruct *temp = (struct myStruct*) malloc(sizeof(struct myStruct));
-    temp->myIdx = (char*) malloc(sizeof(char)*(idxsize(*start)));
-    temp->myStr = (char*) malloc(sizeof(char)*MAX_MESSAGE_SIZE);
+    struct message *temp = (struct message*) malloc(sizeof(struct message));
+    temp->idx = (char*) malloc(sizeof(char)*(idxsize(*start)));
+    temp->msg = (char*) malloc(sizeof(char)*MAX_MESSAGE_SIZE);
     size_t size;
 
 
     // printf("Write a message: ");
-    size = recvfrom(fd, temp->myIdx, (idxsize(*start)), 0, (struct sockaddr *) &emitter, &length);
-    if(size == -1) {
+    size = recvfrom(fd, temp->idx, (idxsize(*start)), 0, (struct sockaddr *) &emitter, &length);
+    if(size != -1) {}
+    else{
         if(errno == ECONNRESET) printf("ECONNRESET\n");
         close(fd);
         perror("Receiver"); exit(EXIT_FAILURE);
     }
 
-    size = recvfrom(fd, temp->myStr, len, 0, (struct sockaddr *) &emitter, &length);
-    if(size == -1) {
+    size = recvfrom(fd, temp->msg, len, 0, (struct sockaddr *) &emitter, &length);
+    if(size != -1) {}
+    else{
         if(errno == ECONNRESET) printf("ECONNRESET\n");
         close(fd);
         perror("Receiver"); exit(EXIT_FAILURE);
@@ -163,12 +165,12 @@ int receive_last_rand_str(struct myStruct** myData, int *start){
 
     // connection_fd is marked as connected
     // and it knows where the message should be directed
-    printf("%s\n", temp->myIdx);
+    printf("%s\n", temp->idx);
     int ans=0;
     int i = 0;
-    while(temp->myIdx[i]!='\0'){
+    while(temp->idx[i]!='\0'){
         ans *= 10;
-        ans += (int)((temp->myIdx[i]-'0'));
+        ans += (int)((temp->idx[i]-'0'));
         i++;
     }
     int r_val=ans;
@@ -179,21 +181,25 @@ int receive_last_rand_str(struct myStruct** myData, int *start){
 }
 
 int main(int argc, const char* argv[]){
-    struct myStruct* myData;
+    struct message* myMsg;
 
-    generate_n_rand_str(&myData) ;
+    generate_strings(&myMsg) ;
 
     int start = 0;
+    struct timespec t1,t2;
+    clock_gettime(CLOCK_REALTIME,&t1);
     while(start<num){
         printf("Sent data:\n");
-        send_t_rand_str(myData, 5, &start);
+        send(myMsg, 5, &start);
         printf("----------------\n");
         printf("Received data:\n");
-        start = receive_last_rand_str(&myData, &start);
+        start = receive(&myMsg, &start);
         start++;
         printf("----------------\n");
         sleep(1);
     }
+    clock_gettime(CLOCK_REALTIME,&t2);
+    printf("time taken in socket mode= %lf\n", fabs(((t2.tv_sec-t1.tv_sec)+(t2.tv_nsec-t1.tv_nsec)/1e9)));
 
     return 0;
 }

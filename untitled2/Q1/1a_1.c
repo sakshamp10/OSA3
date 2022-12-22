@@ -59,10 +59,10 @@ int main(){
             exit(-1);
         }
     }
-    printf("*************************************\n");
+
     printf("Number of Philosophers: %d\n",5);
-    printf("Number of Forks: %d\n",5);
-    printf("*************************************\n");
+    printf("Number of Forks: %d\n\n\n",5);
+
     for(int i=0;i<5;i++){
         st=pthread_create(&philosophers[i],NULL,thinking_start,&sequencing[i]);
         if(st){

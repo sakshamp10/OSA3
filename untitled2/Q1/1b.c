@@ -117,10 +117,10 @@ int main(){
         printf("Encountered error while executing sem_init()\n");
         exit(-1);
     }
-    printf("*************************************\n");
+
     printf("Number of Philosophers: %d\n",5);
-    printf("Number of Forks: %d\n",5);
-    printf("*************************************\n");
+    printf("Number of Forks: %d\n\n\n",5);
+
     sem_getvalue(&bowl1,&bowl1un);
     sem_getvalue(&bowl2,&bowl2un);
     for(int i=0;i<5;i++){
