@@ -80,7 +80,7 @@ void generate_strings(struct message** myMsg){
     }
 }
 
-void send(struct message* myMsg, int t, int* start){
+void sender(struct message* myMsg, int t, int* start){
     struct sockaddr_un address;
     int fd;
 
@@ -190,7 +190,7 @@ int main(int argc, const char* argv[]){
     clock_gettime(CLOCK_REALTIME,&t1);
     while(start<num){
         printf("Sent data:\n");
-        send(myMsg, 5, &start);
+        sender(myMsg, 5, &start);
         printf("----------------\n");
         printf("Received data:\n");
         start = receive(&myMsg, &start);

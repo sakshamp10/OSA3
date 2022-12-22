@@ -151,7 +151,7 @@ int main(int argc, const char* argv[]){
         sleep(0.5);
     }
     clock_gettime(CLOCK_REALTIME,&t2);
-    printf("time taken in socket mode= %lf\n", fabs(((t2.tv_sec-t1.tv_sec)+(t2.tv_nsec-t1.tv_nsec)/1e9)));
+    printf("time taken in FIFO mode= %lf\n", fabs(((t2.tv_sec-t1.tv_sec)+(t2.tv_nsec-t1.tv_nsec)/1e9)));
 
     return 0;
 }
