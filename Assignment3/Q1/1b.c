@@ -6,7 +6,7 @@
 #include<string.h>
 
 sem_t forks[5],bowl1,bowl2;
-int bowl1un,bowl2un;
+int bowl1_sval,bowl2_sval;
 
 
 void *thinking_start(void *philosopher){
@@ -35,7 +35,7 @@ void *thinking_start(void *philosopher){
             sem_getvalue(&bowl1,&b1);
             sem_getvalue(&bowl2,&b2);
         }
-        if(bowl1un==b1){
+        if(bowl1_sval==b1){
             st=sem_wait(&bowl1);
             if(st){
                 printf("Encountered error while executing sem_wait()\n");
@@ -65,7 +65,7 @@ void *thinking_start(void *philosopher){
             printf("Philosoper at Position %d puts the Fork at Position %d\n",phil_pos,((phil_pos)%5)+1);
             flag=0;
         }
-        else if(bowl2un==b2){
+        else if(bowl2_sval==b2){
             st=sem_wait(&bowl2);
 
             if(st){
@@ -121,8 +121,8 @@ int main(){
     printf("Number of Philosophers: %d\n",5);
     printf("Number of Forks: %d\n\n\n",5);
 
-    sem_getvalue(&bowl1,&bowl1un);
-    sem_getvalue(&bowl2,&bowl2un);
+    sem_getvalue(&bowl1,&bowl1_sval);
+    sem_getvalue(&bowl2,&bowl2_sval);
     for(int i=0;i<5;i++){
         st=pthread_create(&philosophers[i],NULL,thinking_start,&sequencing[i]);
         if(st){
