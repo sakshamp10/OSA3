@@ -29,10 +29,6 @@ static int __init init_os(void)
         return -ESRCH;
     }
     printKern(&task);
-//     printk(KERN_INFO "pid :%d\n", task->pid);
-//     printk(KERN_INFO "uid : %d\n", task->cred->uid.val);
-//     printk(KERN_INFO "pgid : %d\n", task->group_leader->pid);
-//     printk(KERN_INFO "comm : %s\n", task->comm);
     return 0;
 }
 static void __exit exit_os(void)
