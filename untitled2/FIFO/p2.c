@@ -85,11 +85,11 @@ int main(int argc, const char* argv[]){
 	while(start<num){
 //        printf("Received data:\n");
 		receive(&myData, &start);
-		sleep(0.5);
+//		sleep(0.5);
 //		printf("Sent data:\n");
 		send_last_rand_str(myData, &start);
         printf("\n\n");
-		sleep(1);
+//		sleep(1);
 	}
 
     return 0;

@@ -196,7 +196,7 @@ int main(int argc, const char* argv[]){
         start = receive(&myMsg, &start);
         start++;
         printf("----------------\n");
-        sleep(1);
+//        sleep(1);
     }
     clock_gettime(CLOCK_REALTIME,&t2);
     printf("time taken in socket mode= %lf\n", fabs(((t2.tv_sec-t1.tv_sec)+(t2.tv_nsec-t1.tv_nsec)/1e9)));

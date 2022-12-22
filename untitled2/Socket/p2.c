@@ -31,11 +31,11 @@ int idxsize(int i){
     else return 2;
 }
 
-void receive(struct myStruct** myData, int* start){
+void receive(struct myStruct** myData, int* st){
     struct sockaddr_un address;
-    int fd;
+    int f1;
 
-    if((fd = socket(AF_UNIX, SOCK_DGRAM, 0)) == -1){
+    if((f1 = socket(AF_UNIX, SOCK_DGRAM, 0)) == -1){
         perror("Socket cannot be initialized!");
         exit(EXIT_FAILURE);
     }
@@ -44,7 +44,7 @@ void receive(struct myStruct** myData, int* start){
     memcpy(address.sun_path, LOCAL, strlen(LOCAL) + 1);
 
     unlink(LOCAL);
-    if(bind(fd, (struct sockaddr*) &address, sizeof(address)) == -1){
+    if(bind(f1, (struct sockaddr*) &address, sizeof(address)) == -1){
         perror("Socket cannot be bound!");
         exit(EXIT_FAILURE);
     }
@@ -53,33 +53,34 @@ void receive(struct myStruct** myData, int* start){
     socklen_t len;
 
     struct myStruct *temp = (struct myStruct*) malloc(sizeof(struct myStruct));
-    temp->idx = (char*) malloc(sizeof(char)*(idxsize(*start)));
+    temp->idx = (char*) malloc(sizeof(char)*(idxsize(*st)));
     temp->msg = (char*) malloc(sizeof(char)*MAX_MESSAGE_SIZE);
     size_t size;
     int ii = 0;
     while(ii!=5){
-        // printf("Write a message: ");
-        size = recvfrom(fd, temp->idx, (idxsize(*start)), 0, (struct sockaddr *) &emitter, &len);
-        if(size == -1) {
+        size = recvfrom(f1, temp->idx, (idxsize(*st)), 0, (struct sockaddr *) &emitter, &len);
+        if(size != -1) {}
+        else{
             if(errno == ECONNRESET) printf("ECONNRESET\n");
-            close(fd);
+            close(f1);
             perror("Receiver"); exit(EXIT_FAILURE);
         }
-        if((*start)!=0 && strcmp(temp->idx, (*myData)[(*start)-1].idx)==0){
+        if((*st)!=0 && strcmp(temp->idx, (*myData)[(*st)-1].idx)==0){
             break;
         }
-        memcpy((*myData)[*start].idx, temp->idx, (idxsize(*start)));
-        size = recvfrom(fd, temp->msg, l, 0, (struct sockaddr *) &emitter, &len);
-        if(size == -1) {
+        memcpy((*myData)[*st].idx, temp->idx, (idxsize(*st)));
+        size = recvfrom(f1, temp->msg, l, 0, (struct sockaddr *) &emitter, &len);
+        if(size != -1) {}
+        else{
             if(errno == ECONNRESET) printf("ECONNRESET\n");
-            close(fd);
+            close(f1);
             perror("Receiver"); exit(EXIT_FAILURE);
         }
-        memcpy((*myData)[*start].msg, temp->msg, l);
+        memcpy((*myData)[*st].msg, temp->msg, l);
 
-        printf("%s %s\n", (*myData)[*start].idx, (*myData)[*start].msg);
-        *start=*start+1;
-        if(*start<n){
+        printf("%s %s\n", (*myData)[*st].idx, (*myData)[*st].msg);
+        *st=*st+1;
+        if(*st<n){
         }
         else{
             break;
@@ -87,23 +88,23 @@ void receive(struct myStruct** myData, int* start){
         ii++;
     }
     free(temp);
-    close(fd);
+    close(f1);
 }
 
-void send_str(struct myStruct* myData, int *start){
+void send_str(struct myStruct* myData, int *st){
     struct sockaddr_un address;
-    int fd;
+    int f1;
 
     address.sun_family = AF_UNIX;
     memcpy(address.sun_path, LOCAL, strlen(LOCAL) + 1);
 
-    if((fd = socket(AF_UNIX, SOCK_DGRAM, 0)) == -1){
+    if((f1 = socket(AF_UNIX, SOCK_DGRAM, 0)) == -1){
         perror("Socket cannot be initialized!");
         exit(EXIT_FAILURE);
     }
 
     unlink(LOCAL);
-    if(bind(fd, (struct sockaddr*) &address, sizeof(address)) == -1){
+    if(bind(f1, (struct sockaddr*) &address, sizeof(address)) == -1){
         perror("Socket cannot be bound!");
         exit(EXIT_FAILURE);
     }
@@ -112,13 +113,12 @@ void send_str(struct myStruct* myData, int *start){
     destination.sun_family = AF_UNIX;
     memcpy(destination.sun_path, DESTINATION, strlen(DESTINATION) + 1);
 
-    sendto(fd, myData[(*start)-1].idx, (idxsize(*start-1)), 0, (struct sockaddr*) &destination, sizeof(destination));
-    sendto(fd, myData[(*start)-1].msg, l, 0, (struct sockaddr*) &destination, sizeof(destination));
+    sendto(f1, myData[(*st)-1].idx, (idxsize(*st-1)), 0, (struct sockaddr*) &destination, sizeof(destination));
+    sendto(f1, myData[(*st)-1].msg, l, 0, (struct sockaddr*) &destination, sizeof(destination));
 
-    printf("%s\n", myData[(*start)-1].idx);
-    // printf("%s %s\n", myData[(*start)-1].idx, myData[(*start)-1].msg);
+    printf("%s\n", myData[(*st)-1].idx);
 
-    close(fd);
+    close(f1);
 }
 
 int main(int argc, const char* argv[]){
@@ -130,16 +130,16 @@ int main(int argc, const char* argv[]){
         myData[i].idx = (char*) malloc((idxsize(i))*sizeof(char));
     }
 
-    int start=0;
+    int st=0;
 
-    while(start<n){
+    while(st<n){
         printf("Received data:\n");
-        receive(&myData, &start);
-        printf("----------------\n");
-        sleep(1);
+        receive(&myData, &st);
+        printf("\n\n");
+//        sleep(1);
         printf("Sent data:\n");
-        send_str(myData ,&start);
-        printf("----------------\n");
+        send_str(myData ,&st);
+        printf("\n\n");
     }
 
 
